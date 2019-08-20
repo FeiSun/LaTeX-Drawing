@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+%\pgfplotsset{compat=1.14}
+
+\input{color.tex}
+
+\begin{document}
+
+
+\pgfplotsset{
+axis background/.style={fill=gallery},
+grid=both,
+  xtick pos=left,
+  ytick pos=left,
+  tick style={
+    major grid style={style=white,line width=1pt},
+    minor grid style=bgc,
+    draw=none,
+  },
+  minor tick num=1,
+}
+
+\begin{figure*}
+  \begin{center}
+    \ref{named}
+    \begin{tikzpicture}[scale=0.49]
+      \begin{axis}[
+        %axis on top,
+        enlarge x limits=0.3,
+        xlabel=WordSim 353,
+        ylabel=$\rho \times 100$,
+        ymin=20, ymax=80,
+        xticklabels={50,100,300},
+        xtick={1,2,3},
+        legend style={
+          font=\tiny,
+          draw=none,
+          draw opacity=0,
+          legend columns=-1,
+          at={(0, 1.)},
+          anchor=south,
+          /tikz/every even column/.append style={column sep=1mm}
+        },
+        ybar=1pt,%  configures ‘bar shift’
+        bar width=5.6pt,
+        ymajorgrids,
+        major grid style={draw=white},
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        % nodes near coords,
+        legend entries = {C\&W, GCANLM, HPCA, GloVe, PV-DM, PV-DBOW, SG, HDC, CBOW, PDC},
+        legend to name=named
+        ]
+        \addplot [draw=none, fill=aluminum]
+        coordinates {
+          (1, 49.75)};
+        \addplot [draw=none, fill=ship_gray]
+        coordinates {
+          (1, 62.04)};
+        \addplot [draw=none, fill=shakespeare]
+        coordinates {
+          (1, 40.26)
+          (2, 41.37)};
+        \addplot[draw=none, fill=cosmic_latte] coordinates {
+          (1, 49.51)
+          (2, 52.76)
+          (3, 60.12)
+        };
+        \addplot[draw=none, fill=egg_shell] coordinates {
+          (1, 61.14)
+          (2, 64.27)
+          (3, 61.21)
+        };
+        \addplot[draw=none, fill=sushi] coordinates {
+          (1, 66.24)
+          (2, 71.33)
+          (3, 73.29)
+        };
+        \addplot[draw=none, fill=mona_lisa] coordinates {
+          (1, 58.66)
+          (2, 64.05)
+          (3, 68.23)
+        };
+        \addplot[draw=none, fill=seagull] coordinates {
+          (1, 65.6)
+          (2, 70.25)
+          (3, 73.67)
+        };
+        \addplot[draw=none, fill=flamingo] coordinates {
+          (1, 69.77)
+          (2, 73.12)
+          (3, 72.7)
+        };
+        \addplot[draw=none, fill=sundown] coordinates {
+          (1, 69.41)
+          (2, 74.12)
+          (3, 75.52)
+        };
+      \end{axis}
+    \end{tikzpicture}
+    % 
+    \begin{tikzpicture}[scale=0.49]
+      \begin{axis}[
+        %axis on top,
+        enlarge x limits=0.3,
+        xlabel=SCWS,
+        ylabel=$\rho \times 100$,
+        ymin=40, ymax=70,
+        xticklabels={50,100,300},
+        xtick={1,2,3},
+        ybar=1pt,%  configures ‘bar shift’
+        bar width=5.6pt,
+        ymajorgrids,
+        major grid style={draw=white},
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        ]
+        \addplot [draw=none, fill=aluminum]
+        coordinates {
+          (1, 57.9)};
+        \addplot [draw=none, fill=ship_gray]
+        coordinates {
+          (1, 44.92)};
+        \addplot [draw=none, fill=shakespeare]
+        coordinates {
+          (1, 41.97)
+          (2, 42.34)};
+        \addplot[draw=none, fill=cosmic_latte] coordinates {
+          (1, 53.13)
+          (2, 53.18)
+          (3, 56.24)
+        };
+        \addplot[draw=none, fill=egg_shell] coordinates {
+          (1, 61.49)
+          (2, 63.99)
+          (3, 65.86)
+        };
+        \addplot[draw=none, fill=sushi] coordinates {
+          (1, 64.27)
+          (2, 65.33)
+          (3, 64.93)
+        };
+        \addplot[draw=none, fill=mona_lisa] coordinates {
+          (1, 58.54)
+          (2, 61.22)
+          (3, 65.53)
+        };
+        \addplot[draw=none, fill=seagull] coordinates {
+          (1, 60.18)
+          (2, 62.76)
+          (3, 66.22)
+        };
+        \addplot[draw=none, fill=flamingo] coordinates {
+          (1, 63.74)
+          (2, 65.13)
+          (3, 67.2)
+        };
+        \addplot[draw=none, fill=sundown] coordinates {
+          (1, 65.63)
+          (2, 66.59)
+          (3, 67.23)
+        };
+      \end{axis}
+    \end{tikzpicture}
+    % 
+    \begin{tikzpicture}[scale=0.49]
+      \begin{axis}[
+        %axis on top,
+        enlarge x limits=0.3,
+        xlabel=RW,
+        ylabel=$\rho \times 100$,
+        ymin=0, ymax=60,
+        xticklabels={50,100,300},
+        xtick={1,2,3},
+        ybar=1pt,%  configures ‘bar shift’
+        bar width=5.6pt,
+        ymajorgrids,
+        major grid style={draw=white},
+        y axis line style={opacity=0},
+        tickwidth=0pt
+        ]
+        \addplot [draw=none, fill=aluminum]
+        coordinates {
+          (1, 38.54)};
+        \addplot [draw=none, fill=ship_gray]
+        coordinates {
+          (1, 6.4)};
+        \addplot [draw=none, fill=shakespeare]
+        coordinates {
+          (1, 18.58)
+          (2, 18.76)};
+        \addplot[draw=none, fill=cosmic_latte] coordinates {
+          (1, 34.03)
+          (2, 36.64)
+          (3, 41.18)
+        };
+        \addplot[draw=none, fill=egg_shell] coordinates {
+          (1, 37.22)
+          (2, 40.56)
+          (3, 44.57)
+        };
+        \addplot[draw=none, fill=sushi] coordinates {
+          (1, 43.94)
+          (2, 46.39)
+          (3, 44.7)
+        };
+        \addplot[draw=none, fill=mona_lisa] coordinates {
+          (1, 37.16)
+          (2, 41.47)
+          (3, 42.82)
+        };
+        \addplot[draw=none, fill=seagull] coordinates {
+          (1, 40.95)
+          (2, 44.26)
+          (3, 48.86)
+        };
+        \addplot[draw=none, fill=flamingo] coordinates {
+          (1, 40.89)
+          (2, 44.62)
+          (3, 47.76)
+        };
+        \addplot[draw=none, fill=sundown] coordinates {
+          (1, 44.72)
+          (2, 47.54)
+          (3, 50.01)
+        };
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  \caption{Example for bar chart and legend ref.}
+  \label{fig:WordSim}
+\end{figure*}
+
+
+\end{document}
