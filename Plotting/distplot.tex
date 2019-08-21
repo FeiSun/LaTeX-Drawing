@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+%\pgfplotsset{compat=1.14}
+
+\input{color}
+
+\begin{document}
+
+
+\begin{figure}
+\pgfplotsset{
+axis background/.style={fill=gallery},
+grid=both,
+  xtick pos=left,
+  ytick pos=left,
+  tick style={
+    major grid style={style=white,line width=.5pt},
+    minor grid style={style=bgc, line width=.1pt},
+    draw=none
+    },
+  ytick={200, 400},
+  every x tick label/.append style={font=\tiny, yshift=2pt},
+  every y tick label/.append style={rotate=90, font=\fontsize{1pt}{1pt}\selectfont, yshift=-2pt},
+  ymajorgrids,
+	major grid style={draw=white},
+	y axis line style={opacity=0},
+	tickwidth=0pt,
+  title style={yshift=-5ex, font=\small},
+  y label style={yshift=-5pt},
+  minor tick num=1,
+  height=0.4\linewidth,
+  width=0.9\linewidth,
+  ymin=0, ymax=600
+}
+\centering
+
+\begin{tikzpicture}
+	\begin{axis}[
+		smooth,
+		%stack plots=y,
+		area style,
+		enlarge x limits=false,
+		xticklabels={0-2, 2-4, 4-8, 8-16, 16-32, 32-64, 64-128, 128-256, 256-512, 512-1024},
+	    xtick={1,2,3,4,5,6,7,8,9,10},
+	    ylabel={\scriptsize Counting},
+	    title={DeepWalk},
+	    ]
+	\addplot[color=puerto_rico, fill=puerto_rico] coordinates
+		{(1, 130) (2, 531) (3, 237) (4, 46) (5, 7) (6, 3) (7, 2) (8, 5) (9, 7) (10, 0)}
+		\closedcycle;
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\begin{axis}[
+		smooth,
+		%stack plots=y,
+		area style,
+		enlarge x limits=false,
+		xticklabels={0-2, 2-4, 4-8, 8-16, 16-32, 32-64, 64-128, 128-256, 256-512, 512-1024},
+	    xtick={1,2,3,4,5,6,7,8,9,10},
+	    ylabel={\scriptsize Counting},
+	    title={CANE},
+	    ]
+	\addplot[color=biscay, fill=biscay] coordinates
+		{(1, 6) (2, 7) (3, 15) (4, 31) (5, 62) (6, 116) (7, 194) (8, 287) (9, 247) (10, 3)}
+		\closedcycle;
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\begin{axis}[
+		smooth,
+		%stack plots=y,
+		area style,
+		enlarge x limits=false,
+		xticklabels={0-2, 2-4, 4-8, 8-16, 16-32, 32-64, 64-128, 128-256, 256-512, 512-1024},
+	    xtick={1,2,3,4,5,6,7,8,9,10},
+	    ylabel={\scriptsize Counting},
+	    title={TriDNR},
+	    ]
+	\addplot[color=celestial_blue, fill=celestial_blue] coordinates
+		{(1, 19) (2, 151) (3, 122) (4, 106) (5, 103) (6, 96) (7, 100) (8, 111) (9, 157) (10, 3)}
+		\closedcycle;
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\begin{axis}[
+		smooth,
+		%stack plots=y,
+		area style,
+		enlarge x limits=false,
+		xticklabels={0-2, 2-4, 4-8, 8-16, 16-32, 32-64, 64-128, 128-256, 256-512, 512-1024},
+	    xtick={1,2,3,4,5,6,7,8,9,10},
+	    ylabel={\scriptsize Counting},
+	    title={GraphSAGE},
+	    ]
+	\addplot[color=my_sin, fill=my_sin] coordinates
+		{(1, 40) (2, 149) (3, 127) (4, 125) (5, 118) (6, 127) (7, 136) (8, 88) (9, 58) (10, 0)}
+		\closedcycle;
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\begin{axis}[
+		smooth,
+		%stack plots=y,
+		area style,
+		enlarge x limits=false,
+		xticklabels={0-2, 2-4, 4-8, 8-16, 16-32, 32-64, 64-128, 128-256, 256-512, 512-1024},
+	    xtick={1,2,3,4,5,6,7,8,9,10},
+	    ylabel={\scriptsize Counting},
+	    title={CNE},
+	    ]
+	\addplot[color=flamingo, fill=flamingo] coordinates
+		{(1,589) (2,173) (3,66) (4,36) (5,14) (6,11) (7,11) (8,30) (9,38) (10,0)}
+		\closedcycle;
+	\end{axis}
+\end{tikzpicture}
+
+  \caption{Dist plot.}
+  \label{rank_distribution}
+\end{figure}
+
+
+
+\end{document}
