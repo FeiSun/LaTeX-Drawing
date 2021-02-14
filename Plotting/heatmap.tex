@@ -1,0 +1,110 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{CJKutf8}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
+
+\input{color.tex}
+
+\begin{document}
+
+
+\tikzset{
+  tit/.style = {text depth=.25ex, text height=1.5ex, inner sep=0, outer sep=0}
+}
+\pgfplotsset{
+%axis background/.style={fill=none},
+colormap={my_colormap}{
+    rgb255=(56, 113, 66),
+    rgb255=(239, 251, 242),
+},
+}
+\pgfplotsset{
+    colormap default colorspace=rgb,
+    colormap={blueColormap}{
+       color(0000pt)=(cosmic_latte!50!white);
+       color(1000pt)=(chinook!50!cosmic_latte);
+       color(1500pt)=(chinook);
+       color(2500pt)=(pastel_green);
+       %color(4000pt)=(pastel_green);
+       color(4000pt)=(ocean_green);
+       color(5000pt)=(killarney);
+   }
+}
+
+\begin{figure}
+\centering
+%\resizebox{\linewidth}{!}{
+\begin{tikzpicture}[]
+\tikzstyle{every node}=[font=\scriptsize]
+\fill[cosmic_latte] (0, 0) rectangle ++(0.8,0.5);
+\fill[killarney!80!ocean_green] (0.8, 0) rectangle ++(0.8,0.5);
+\fill[killarney!62!ocean_green] (1.6, 0) rectangle ++(0.8,0.5);
+\fill[killarney!47!ocean_green] (2.4, 0) rectangle ++(0.8,0.5);
+\fill[killarney!30!ocean_green] (3.2, 0) rectangle ++(0.8,0.5);
+\fill[ocean_green!40!pastel_green] (4, 0) rectangle ++(0.8,0.5);
+\fill[pastel_green] (4.8, 0) rectangle ++(0.8,0.5);
+\fill[pastel_green!50!chinook] (5.6, 0) rectangle ++(0.8,0.5);
+\fill[pastel_green!90!chinook] (6.4, 0) rectangle ++(0.8,0.5);
+
+\node[] (w1) at (-0.4, 0.2) {\normalsize$\lambda$};
+\node[tit] (w1) at (0.4, 0.7) {MOD-X};
+\node[tit] (w2) at (1.2, 0.7) {\begin{CJK*}{UTF8}{gkai}任\end{CJK*}};
+\node[tit] (w3) at (2, 0.7) {\begin{CJK*}{UTF8}{gkai}天\end{CJK*}};
+\node[tit] (w4) at (2.8, 0.7) {\begin{CJK*}{UTF8}{gkai}堂\end{CJK*}};
+\node[tit] (w5) at (3.6, 0.7) {Switch};
+\node[tit] (w6) at (4.4, 0.7) {\begin{CJK*}{UTF8}{gkai}背\end{CJK*}};
+\node[tit] (w7) at (5.2, 0.7) {\begin{CJK*}{UTF8}{gkai}夹\end{CJK*}};
+\node[tit] (w8) at (6, 0.7) {\begin{CJK*}{UTF8}{gkai}电\end{CJK*}};
+\node[tit] (w9) at (6.8, 0.7) {\begin{CJK*}{UTF8}{gkai}池\end{CJK*}};
+
+\node[] (w1) at (-0.4, -0.8) {\normalsize$\lambda$};
+\fill[killarney!25!ocean_green] (0, -1) rectangle ++(0.8,0.5);
+\fill[killarney!15!ocean_green] (0.8, -1) rectangle ++(0.8,0.5);
+\fill[cosmic_latte!80!chinook] (1.6, -1) rectangle ++(0.8,0.5);
+\fill[cosmic_latte!55!chinook] (2.4, -1) rectangle ++(0.8,0.5);
+\fill[chateau_green!50!ocean_green] (3.2, -1) rectangle ++(0.8,0.5);
+\fill[ocean_green!37!pastel_green] (4, -1) rectangle ++(0.8,0.5);
+\fill[ocean_green!12!pastel_green] (4.8, -1) rectangle ++(0.8,0.5);
+\fill[pastel_green!38!chinook] (5.6, -1) rectangle ++(0.8,0.5);
+
+\node[tit] (t1) at (0.4, -0.3) {\begin{CJK*}{UTF8}{gkai}美\end{CJK*}};
+\node[tit] (t2) at (1.2, -0.3) {\begin{CJK*}{UTF8}{gkai}国\end{CJK*}};
+\node[tit] (t3) at (2, -0.3) {\tiny Manhattan};
+\node[tit] (t4) at (2.8, -0.3) {\tiny Portag};
+\node[tit] (t5) at (3.6, -0.3) {\textvisiblespace};
+\node[tit] (t6) at (4.4, -0.3) {\begin{CJK*}{UTF8}{gkai}邮\end{CJK*}};
+\node[tit] (t7) at (5.2, -0.3) {\begin{CJK*}{UTF8}{gkai}差\end{CJK*}};
+\node[tit] (t8) at (6, -0.3) {\begin{CJK*}{UTF8}{gkai}包\end{CJK*}};
+
+\begin{axis}[
+    hide axis,
+    scale only axis,
+    yshift=-1.5cm,
+    xshift=-0.5cm,
+    colorbar,
+    colorbar horizontal,
+    %colorbar sampled,
+    colorbar style={
+        %rotate=90,
+        %anchor=south east,
+        height=0.2cm,
+        width=0.5\linewidth,
+        axis line style={draw=none},
+    },
+    tick style = {draw=none},
+    point meta min=0, 
+    point meta max=1
+    ]
+%\addplot [draw=none] coordinates {(0,0)};
+
+\end{axis}
+        
+\end{tikzpicture}
+\caption{Heatmap}
+\label{fig:cs}
+\end{figure}
+
+\end{document}
