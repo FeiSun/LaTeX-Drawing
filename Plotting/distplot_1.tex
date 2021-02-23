@@ -148,8 +148,8 @@ grid=both,
 \resizebox{0.8\textwidth}{!}{
     \begin{tikzpicture}
       \begin{axis}[
-        %axis on top,
-        % enlarge x limits=0.05,
+        % axis on top,
+        % enlarge x limits=0.001,
         xlabel=\huge Example,
         ylabel=\huge Count,
         ymin=0, ymax=220, ytick distance=20,
@@ -177,7 +177,7 @@ grid=both,
         legend style={
           % nodes={scale=2, transform shape},
           legend image post style={scale=3},
-          font=\Large,
+          font=\Huge,
           fill=gallery,
           draw=none,
           draw opacity=0,
@@ -201,7 +201,6 @@ grid=both,
         legend entries = {cl, sas}
         ]
         \addplot[draw=none, fill=summer_sky, opacity=0.5] coordinates {
-        (-0.9, 0)
         (-0.50, 2)
         (-0.45, 2)
         (-0.40, 2)
@@ -261,28 +260,41 @@ grid=both,
         (0.85, 39)
         (0.90, 7)
         (0.95, 11)
-          }; 
+          };
           
-%        \addplot[draw=blue, ultra thick, smooth] coordinates 
-%    {
-%    (-0.35, 1)
+% fitting curve
+%    \addplot[draw=flamingo, ultra thick,smooth] coordinates {
+%        (-0.35, 1)
 %        (-0.30, 6)
+%        (-0.25, 3)
+%        (-0.20, 12)
+%        (-0.15, 9)
+%        (-0.10, 19)
 %        (-0.05, 33)
+%        (0.00, 26)
+%        (0.05, 34)
+%        (0.10, 37)
 %        (0.15, 45)
+%        (0.20, 37)
 %        (0.25, 57)
 %        (0.30, 75)
 %        (0.35, 107)
 %        (0.40, 147)
+%        (0.45, 157)
 %        (0.50, 186)
 %        (0.55, 212)
 %        (0.60, 211)
+%        (0.65, 170)
 %        (0.70, 177)
 %        (0.75, 144)
 %        (0.80, 98)
 %        (0.85, 39)
 %        (0.90, 7)
-%    };
+%        (0.95, 11)
+%          }; 
+
       \end{axis}
+      
     \end{tikzpicture}}
     
 \end{figure}
