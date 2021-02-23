@@ -1,0 +1,196 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{scalerel}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc, tikzmark, shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata, tikzmark, decorations.pathreplacing, patterns}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{intersections}
+\usepackage{tkz-euclide}
+
+\input{color}
+\fancyhead{}
+
+\begin{document}
+
+
+\tikzset{
+   sis_paper/.pic = {
+   \begin{scope}[scale=0.3]
+      \draw[bottom color=athens_gray, top color=white]
+        (0,0) -- ++(3,0) -- ++(0,3)  -- ++(-1,1) -- ++(-2,0) -- cycle;
+      \draw (3,3) -| (2,4);
+      
+      \foreach \x in {1,2,3,4,5} {
+        \draw (0.5,0.5*\x) -- ++(2,0);
+      }
+      \draw (0.5,3) -- ++(1.2,0);
+      \end{scope}
+      },
+   FARROW/.style={arrows={-{Latex[length=1.25mm, width=1.mm]}}},
+}
+
+
+\begin{figure*}
+  \centering
+%  \resizebox{0.9\textwidth}{!}{
+  \begin{tikzpicture}[]
+
+  \foreach \x/\y in {1/-4, 2/-2, 3/0, 4/2, 5/4} {
+     \pic[local bounding box/.expanded=p0\x, very thick] at (\y, 0) {sis_paper};
+  }
+  
+   \foreach \x/\y in {2/-1, 3/1, 4/3, 5/5} {
+     \pic[local bounding box/.expanded=p1\x, color=summer_sky, very thick] at (\y, -3) {sis_paper};
+  }
+  
+  \pic[local bounding box=p11, color=flamingo, very thick] at (-5, -3) {sis_paper}; 
+  
+  \node[left of=p11, node distance=1.5cm] (t) {Target Paper}; 
+%  \node[below of=p12, node distance=1.5cm] (p_s) {Strength=$[5,2,2,1,3]^{\top}$}; 
+     
+  \foreach \x/\y in {1/2, 1/1, 2/1, 2/2, 2/5, 3/1, 3/4, 3/5, 4/1, 4/3, 5/1, 5/3, 5/5} {
+  \draw[FARROW] (p0\x.south) -> (p1\y.north) {} ;
+  }
+  
+  \foreach \x/\y in {1/5, 2/2, 3/2, 4/1, 5/3}
+  {
+    \node[below of=p1\x, node distance=0.8cm] (s_\x) {\small Strength=$\y$}; 
+  }
+  
+  \node [very thick, dotted, draw=summer_sky, fit={($(p12.north west)+(-0.1,0)$) ($(s_5.south east)+(-0.2, 0.2)$)}, inner sep=5, label={[label distance=0cm]-90:\color{summer_sky} Co-cited papers}] (co_cite) {};
+  
+  \node [very thick, dashed, draw=black, fit={($(t.west)+(0.1,0)$) ($(p11.north)+(0,0.1)$) ($(p15.south east)+(0.2,-0.7)$)}, inner sep=6] (vote) {};
+  
+  \node[left of=vote, node distance=5.5cm, yshift=1.5cm] (vote_a) {Voting Paper}; 
+      
+  \end{tikzpicture}
+%  }
+  \caption{Example}
+  \label{fig:lsy}
+\end{figure*}
+
+\begin{figure*}
+    
+\end{figure*}
+
+
+\begin{figure*}
+  \centering
+%  \resizebox{0.9\textwidth}{!}{
+  \begin{tikzpicture}[]
+  
+  \foreach \x/\y in {2/-1, 3/1, 4/3, 5/5} {
+     \pic[local bounding box/.expanded=p1\x, color=summer_sky, very thick] at (\y, 2.5) {sis_paper};
+  }
+  \pic[local bounding box=p11, color=flamingo, very thick] at (-5, 2) {sis_paper}; 
+  
+  \node[above of=p11, node distance=1cm] (t) {Target Paper}; 
+  
+  \node[left of=p11, node distance=3.5cm] (st1) {\textbf{\Large Step 1}}; 
+  
+  \node [very thick, dotted, draw=summer_sky, fit={($(p12.north west)+(0,1)$) (p15.south east)}, inner sep=5, label={[label distance=-1cm]30: Co-cited papers}] (co_cite) {};
+    
+%  \draw[FARROW] (p12.west) -> (p11.east) {} ;
+%  \draw[FARROW] (p13.west) to[out=135,in=45] (p11.east) {} ;
+%  \draw[FARROW] (p14.west) to[out=135,in=45] (p11.east) {} ;
+%  \draw[FARROW] (p15.west) to[out=150,in=45] (p11.east) {} ;
+
+   \foreach \x in {2,3,4,5} {
+     \draw[FARROW] (p1\x) to[out=150,in=30] (p11) {} ;
+  }
+  
+  \foreach \x in {2,3,4,5}
+  {
+    \node[below of=p1\x, node distance=1.2cm] (s_\x) {\small $\frac{1}{4}$}; 
+  }
+  
+  \foreach \x/\y in {2/-1, 3/1, 4/3, 5/5} {
+     \pic[local bounding box/.expanded=p2\x, color=summer_sky, very thick] at (\y, -2.5) {sis_paper};
+  }
+  \pic[local bounding box=p21, color=flamingo, very thick] at (-5, -2.5) {sis_paper}; 
+    \node[left of=p21, node distance=3.5cm] (st2) {\textbf{\Large Step 2}};
+  
+  \draw[very thick] (-9, 0.6) -- (9, 0.6) ;
+
+  
+   \foreach \x/\y in {1/-7, 2/-5.2, 3/-3.4, 4/-1.6, 5/0.2} {
+     \pic[local bounding box/.expanded=p3\x, color=studio!120, very thick] at (\y, -5.5) {sis_paper};
+  }
+  
+   \foreach \x/\y in {6/3.6, 7/5.2, 8/7} {
+     \pic[local bounding box/.expanded=p3\x, color=chateau_green, very thick] at (\y, -5.5) {sis_paper};
+  }
+  
+  \node[above of=p21, node distance=1cm] (t2) {Target Paper}; 
+  \node[below of=p31, node distance=1cm] (a31) {$\frac{1}{4}\cdot \frac{1}{4}$}; 
+  \node[below of=p32, node distance=1cm] (a32) {$0$}; 
+  \node[below of=p33, node distance=1cm] (a33) {$\frac{1}{4}(\frac{1}{4}{+}\frac{1}{3}{+}\frac{1}{3})$}; 
+  \node[below of=p34, node distance=1cm] (a34) {$\frac{1}{4}(\frac{1}{4}{+}\frac{1}{3})$}; 
+  \node[below of=p35, node distance=1cm] (a35) {$\frac{1}{4}\cdot \frac{1}{4}$}; 
+  
+  \node [very thick, dotted, draw=studio!120, fit={($(p31.north west)+(-0.1,0.1)$) ($(a35.south east)+(0.1, -0.4)$)}, inner sep=5, label={[label distance=-0.6cm]-90: Reference papers}] (co_cite) {};
+  
+  \foreach \x in {2,3,4,5} {
+     \draw[FARROW] (p2\x) to[out=150,in=30] (p21) {} ;
+  }
+  
+
+  \foreach \x/\y in {1/1, 1/2, 1/3, 1/4, 1/5, 2/1, 2/3, 2/4, 2/7, 3/3, 3/4, 3/7, 4/5, 4/6, 4/7, 4/8, 5/3, 5/7, 5/8} {
+  \draw[FARROW] (p2\x.south) -> (p3\y.north) {} ;
+  }
+   
+  \end{tikzpicture}
+%  }
+  \caption{Example}
+  \label{fig:lsy}
+\end{figure*}
+
+
+\begin{figure*}
+\begin{tikzpicture}
+
+    \pic[local bounding box=p11, color=flamingo, very thick] at (0, 0) {sis_paper}; 
+    \pic[local bounding box=p12, color=gray, very thick] at (6, 0) {sis_paper}; 
+    \foreach \x/\y in {1/-4, 2/-2.2, 3/-0.4, 4/1.4, 5/3.2} {
+     \pic[local bounding box/.expanded=p2\x, color=summer_sky, very thick] at (\y, -4) {sis_paper};
+    }
+    \pic[local bounding box=p26, color=gray, very thick] at (6, -4) {sis_paper}; 
+    \pic[local bounding box=p27, color=gray, very thick] at (7.8, -4) {sis_paper}; 
+    \node[left of=p11, node distance=1.5cm] (t) {Target Paper}; 
+    
+    \foreach \x in {1,2,3,4,5} {
+     \draw[FARROW] (p11.south) -> (p2\x.north) {} ;
+    }
+    \draw[FARROW] (p21.south) to[out=-20,in=-160] (p22.south) {} ;
+    \draw[FARROW] (p21.south) to[out=-20,in=-160] (p24.south) {} ;
+    \draw[FARROW] (p22.south east) to[out=-20,in=-160] (p24.south west) {} ;
+    \draw[FARROW, gray] ($(p25.south)+(-0.1, 0.)$) to[out=-20,in=-160] (p27.south) {} ;
+    \draw[FARROW, gray] (p26.south) to[out=-160,in=-20] ($(p25.south)+(0.1, 0.)$) {} ;
+    \draw[FARROW] ($(p25.south)+(-0.3, 0.)$) to[out=-160,in=-20] ($(p24.south)+(0.2, 0.)$) {} ;
+    \draw[FARROW] (p23.south) to[out=-20,in=-150] ($(p25.south)+(-0.15, 0.)$) {} ;
+    
+    \draw[FARROW, gray] (p12) -> (p11) {} ;
+    \draw[FARROW, gray] (p12.south) -> (p26.north) {} ;
+    \draw[FARROW, gray] (p12.south) -> (p27.north) {} ;
+    \draw[FARROW, gray] (p12.south) -> (p24.north) {} ;
+    
+    \node [very thick, dashed, draw=black, fit={($(p11.north west)+(0,0.1)$) ($(p25.south east)+(0.1,-1)$) ($(p21.south west)+(-0.1,-1.4)$)}, inner sep=5, label={[label distance=-0.7cm]-90: Reference cited by the target paper}] (co_cite) {};
+    
+    
+\end{tikzpicture}
+
+\caption{Example}
+\label{fig:exmp3}
+\end{figure*}
+
+
+
+
+\end{document}
