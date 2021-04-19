@@ -1,0 +1,177 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{CJKutf8}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{scalerel}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc, tikzmark, shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata, tikzmark, decorations.pathreplacing, patterns}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{intersections}
+\usepackage{tkz-euclide}
+
+\input{color}
+
+\begin{document}
+
+
+\tikzset{
+  FARROW/.style={arrows={-{Latex[length=1.25mm, width=1.mm]}}},
+  DFARROW/.style={arrows={{Latex[length=1.25mm, width=1.mm]}-{Latex[length=1.25mm, width=1.mm]}}},
+  origin/.style = {circle, fill=monte_carlo, minimum width=1.8em, align=center, inner sep=0, outer sep=0, font=\scriptsize},
+  aug1/.style = {circle, fill=flamingo!72, minimum width=1.8em, align=center, inner sep=0, outer sep=0, font=\scriptsize},
+  aug2/.style = {circle, fill=casablanca, minimum width=1.8em, align=center, inner sep=0, outer sep=0, font=\scriptsize},
+  encoder/.style = {rectangle, fill=Madang!82, minimum width=11em, minimum height=3em, align=center, rounded corners=3},
+  emb_layer/.style = {rectangle, fill=languid_lavender!72, minimum width=11em, minimum height=2em, align=center, rounded corners=3},
+  project/.style = {rectangle, fill=hint_green, minimum width=7em, minimum height=2.4em, align=center, rounded corners=2},
+  v_rep/.style={
+       rectangle split,
+       rectangle split part align=base,
+       rectangle split horizontal=true,
+       rectangle split draw splits=true,
+       rectangle split parts=7,
+       rectangle split part fill={red!30, blue!20, athens_gray!80, matisse, silver},
+       %rounded corners,
+       draw=gray, %very thick,
+       very thin,
+       minimum height=2em,
+       minimum width=3em,
+       %text width=3cm,
+       inner sep=2.5pt,
+       text centered,
+%       font=\tiny,
+       text=gray,
+       rounded corners=1
+       },
+}
+
+\begin{figure*}
+\resizebox{0.9\linewidth}{!}{
+    \begin{tikzpicture}
+    
+    %label=above:8cm, label=below:16cm, label=right:8cm, label=left:8cm
+    % shape border rotate=180
+        
+    \node[] (o) at (0, 0) {};
+    
+    \node [above of=o, node distance=0.8cm, align=center] (v_dots) {$\cdots$};
+    \node [origin, left of=v_dots, node distance=0.6cm] (v2) {$v_2$};
+    \node [origin, left of=v2, node distance=0.75cm] (v1) {$v_1$};
+    \node [origin, right of=v_dots, node distance=0.6cm, inner sep=0, outer sep=0] (v4) {$v_{\scaleto{t-1}{2.8pt}}$};
+    \node [origin, right of=v4, node distance=0.75cm] (v5) {$v_t$};
+    
+%    \node [thick, dotted, draw=black, fit={(v1) (v5)}, inner sep=3] (input) {};
+    \node [emb_layer, above of=v_dots, node distance=1cm] (o_emb) {embedding layer};
+    \node [encoder, above of=o_emb, node distance=1.2cm] (o_enc) {encoder~ $f(\cdot)$};
+     \node [dashed, draw=black, fit={([yshift=-0.5mm, xshift=-0.5mm] o_emb.south west) ([yshift=0.5mm, xshift=0.5mm] o_enc.north east)}, inner sep=3] (o_m) {};
+     
+      \node[v_rep, rectangle split part fill={monte_carlo!62}, above of=o_enc, node distance=1.3cm] (v_i) {
+      \nodepart{four} $\,\cdots$
+     };
+    
+    \draw [thick,draw=black!42, decorate,decoration={brace,amplitude=8pt,mirror}] ([xshift=-1mm, yshift=-1mm] v1.south west) -- ([xshift=1mm, yshift=-1mm] v5.south east) node[midway,yshift=-0.5cm] (o_a) {{\small Original behavior sequence} $s$};
+    
+    
+    \node [circle, fill=celestial_blue!72, right of=v5, node distance=3cm, minimum width=1.8em, align=center, inner sep=0, outer sep=0, font=\scriptsize] (v_t) {$v_{\scaleto{t+1}{2.8pt}}$};
+    
+    \node [emb_layer, above of=v_t, node distance=1cm, minimum width=6em] (t_emb) {embedding layer};
+    
+     \node[v_rep, rectangle split part fill={celestial_blue!48}, above of=t_emb, node distance=2.5cm] (t_r) {
+      \nodepart{four} $\,\cdots$
+     };
+     
+     \node [right of=v_i, node distance=1.5cm] (v_s) {$\bm{s}$};
+     \node [left of=t_r, node distance=1.6cm] (t_o) {$\bm{v}_{t+1}$};
+    
+    %%%%%%%%%% augmentation 2 %%%%%%%%%%
+    \node [left of=v1, node distance=4cm] (b_dots) {$\cdots$};
+     \node [aug2, left of=b_dots, node distance=0.6cm] (b2) {$\widetilde{v}_2$};
+    \node [aug2, left of=b2, node distance=0.75cm] (b1) {$\widetilde{v}_1$};
+    \node [aug2, right of=b_dots, node distance=0.6cm, inner sep=0, outer sep=0] (b4) {$\widetilde{v}_{\scaleto{t-1}{2.8pt}}$};
+    \node [aug2, right of=b4, node distance=0.75cm] (b5) {$\widetilde{v}_t$};
+    \draw [thick,draw=black!42, decorate,decoration={brace,amplitude=8pt,mirror}] ([xshift=-1mm, yshift=-1mm] b1.south west) -- ([xshift=1mm, yshift=-1mm] b5.south east) node[midway,yshift=-0.5cm] (b_a) {$s^{a_j}$};
+    
+%    \node [thick, dotted, draw=black, fit={(b1) (b5)}, inner sep=3] (aug2) {};
+    \node [emb_layer, above of=b_dots, node distance=1cm] (b_emb) {embedding layer};
+    \node [encoder, above of=b_emb, node distance=1.2cm] (b_enc) {encoder~ $f(\cdot)$};
+    \node [dashed, draw=black, fit={([yshift=-0.5mm, xshift=-0.5mm] b_emb.south west) ([yshift=0.5mm, xshift=0.5mm] b_enc.north east)}, inner sep=3] (b_m) {};
+    
+    \node[v_rep, rectangle split part fill={casablanca!62}, above of=b_enc, node distance=1.3cm] (v_b) {
+    \nodepart{four} $\,\cdots$
+     };
+      \node [left of=v_b, node distance=1.6cm] (v_ba) {$\bm{s}^{a_j}$};
+    
+    %%% aug 1
+    \node [left of=b1, node distance=4cm] (a1_dots) {$\cdots$};
+    \node [aug1, left of=a1_dots, node distance=0.6cm] (a2) {$\widehat{v}_2$};
+    \node [aug1, left of=a2, node distance=0.75cm] (a1) {$\widehat{v}_1$};
+    \node [aug1, right of=a1_dots, node distance=0.6cm] (a4) {$\widehat{v}_{\scaleto{t-1}{2.8pt}}$};
+    \node [aug1, right of=a4, node distance=0.75cm] (a5) {$\widehat{v}_t$};
+    \draw [thick,draw=black!42, decorate,decoration={brace,amplitude=8pt,mirror}] ([xshift=-1mm, yshift=-1mm] a1.south west) -- ([xshift=1mm, yshift=-1mm] a5.south east) node[midway,yshift=-0.5cm] (a_a) {$s^{a_i}$};
+
+%    \node [thick, dotted, draw=black, fit={(a1) (a5)}, inner sep=3] (aug1) {};
+    \node [emb_layer, above of=a1_dots, node distance=1cm] (a_emb) {embedding layer};
+    \node [encoder, above of=a_emb, node distance=1.2cm] (a_enc) {encoder~ $f(\cdot)$};
+    \node [dashed, draw=black, fit={([yshift=-0.5mm, xshift=-0.5mm]a_emb.south west) ([yshift=0.5mm, xshift=0.5mm] a_enc.north east)}, inner sep=3] (a_m) {};
+    
+    \node[v_rep, rectangle split part fill={flamingo!62}, above of=a_enc, node distance=1.3cm] (v_a) {
+    \nodepart{four} $\,\cdots$
+     };
+     
+     \node [right of=v_a, node distance=1.6cm] (v_aa) {$\bm{s}^{a_i}$};
+     
+    
+     \draw[DFARROW, dashed] (a_m) -- (b_m) node [pos=0.5, above, black] (ab){share};
+     \draw[DFARROW, dashed] (b_m) -- (o_m) node [pos=0.5, above, black] {share};
+     
+     
+     %%%%% framework
+     \node [above of=v_a, node distance=1cm, xshift=26.75mm] (cl_score) {$\bm{s}^{a_i} \cdot \bm{s}^{a_j}$};
+     \node [above of=cl_score, node distance=0.8cm] (cl_loss) {contrastive loss};
+     \draw[FARROW] (cl_score) -> (cl_loss);
+     \draw[FARROW, rounded corners,] (v_a.north) |- (cl_score.west) {} ;
+     \draw[FARROW, rounded corners,] (v_b.north) |- (cl_score.east) {} ;
+     
+     \node [above of=v_i, node distance=1cm, xshift=21.75mm] (rec_score) {$\bm{s} \cdot \bm{v}_{t+1}$};
+     \node [above of=rec_score, node distance=0.8cm] (rec_loss) {recommendation loss};
+     \draw[FARROW] (rec_score) -> (rec_loss);
+     \draw[FARROW, rounded corners,] (v_i.north) |- (rec_score.west) {} ;
+     \draw[FARROW, rounded corners,] (t_r.north) |- (rec_score.east) {} ;
+    
+     \foreach \x in {1,2,4,5}
+     {
+        \draw[FARROW] (a\x) -- ++(0, 0.7);
+        \draw[FARROW] (b\x) -- ++(0, 0.7);
+        \draw[FARROW] (v\x) -- ++(0, 0.7);
+        \draw[FARROW] ($(a\x.north)+(0, 1.03)$) -- ++(0, 0.4);
+        \draw[FARROW] ($(b\x.north)+(0, 1.03)$) -- ++(0, 0.4);
+        \draw[FARROW] ($(v\x.north)+(0, 1.03)$) -- ++(0, 0.4);
+     }
+     \draw[FARROW] (v_t) -> (t_emb);
+
+    \draw[FARROW] (a_enc) -> (v_a);
+    \draw[FARROW] (b_enc) -> (v_b);
+    \draw[FARROW] (o_enc) -> (v_i);
+    \draw[FARROW] (t_emb) -> (t_r);
+    \draw[FARROW, dashed] (o_a.south) -- ++(0, -0.3) -- ++(-5.3, 0) -> ++(0, 0.4);
+    \draw[FARROW, dashed] (o_a.south) -- ++(0, -0.3) -- ++(-10.7, 0) -> ++(0, 0.4);
+    
+    \node [right of=a_a, node distance=1.7cm, yshift=-3mm] (aug_1) {$a_i \sim \mathcal{A}$};
+    \node [right of=b_a, node distance=1.7cm, yshift=-3mm] (aug_1) {$a_j \sim \mathcal{A}$};
+    
+    
+    \end{tikzpicture} }
+    \caption{contrastive learning for rec}
+    \label{fig:multitask}
+\end{figure*}
+
+
+
+
+
+\end{document}
