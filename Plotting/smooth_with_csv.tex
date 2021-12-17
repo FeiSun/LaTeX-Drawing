@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+
+\usepackage{pgfplots}
+\usepackage{csvsimple}
+
+%\pgfplotsset{compat=1.14}
+
+\input{color.tex}
+
+\begin{document}
+
+
+\pgfplotsset{
+axis background/.style={fill=gallery},
+grid=both,
+  xtick pos=left,
+  ytick pos=left,
+  tick style={
+    major grid style={style=white,line width=1pt},
+    minor grid style=gallery,
+    draw=none
+    },
+  legend style={
+          font=\tiny,
+          draw=none,
+          %draw opacity=0,
+          %legend columns=-1,
+          at={(1.2, 0.7)},
+          anchor=south,
+          /tikz/every even column/.append style={column sep=1mm}
+        },
+  legend cell align={left},
+  minor tick num=1,
+  ymajorgrids,
+	major grid style={draw=white},
+	y axis line style={opacity=0},
+	tickwidth=0pt,
+}
+
+\begin{tikzpicture}
+\begin{axis}[xlabel=tet]
+\addplot[flamingo, thick, opacity=0.4] table [x=x, y=y, col sep=comma] {./original.csv};
+\addlegendentry{original}
+\addplot[summer_sky,] table [x=x, y=y, col sep=comma] {./smooth_0.99.csv};
+\addlegendentry{smooth 1}
+\addplot[studio] table [x=x, y=y, col sep=comma] {./smooth_2_0.99.csv};
+\addlegendentry{smooth 2}
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

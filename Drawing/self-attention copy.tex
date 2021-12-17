@@ -1,0 +1,326 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{scalerel}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc,tikzmark,shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata,tikzmark,decorations.pathreplacing,patterns}
+
+\input{color}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\begin{document}
+
+\tikzset{
+  emb/.style = {draw, rectangle, fill=cosmos, minimum width=3em, minimum height=1.3em, inner sep=0, outer sep=0},
+  transformer/.style = {draw, rectangle, fill=cruise, minimum width=3em, minimum height=1.5em},
+  norm/.style = {draw, rectangle, fill=spring_sun, minimum width=4.5em, minimum height=1em, inner sep=0, outer sep=0},
+  dropout/.style = {draw, rectangle, fill=hint_green, minimum width=4.5em, minimum height=1em, inner sep=0, outer sep=0},
+  mh/.style = {draw, rectangle, fill=dairy_cream, minimum width=4.5em, minimum height=1.5em},
+  ff/.style = {draw, rectangle, fill=french_pass, minimum width=4.5em, minimum height=1.5em},
+  posemb/.style = {draw, rectangle, fill=watusi, minimum width=3em, minimum height=1.3em, inner sep=0, outer sep=0},
+  proj/.style = {draw, rectangle, fill=Madang, minimum width=3em, minimum height=1.5em, inner sep=0, outer sep=0},
+  FARROW/.style={arrows={-{Latex[length=1mm, width=0.8mm]}}}
+}
+
+\begin{figure*}
+\centering
+%\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+\node[emb] (e1) at (0, 0) {$\bm{v}_1$};
+\node[right of=e1, node distance=1.2cm] (e2) {$\cdots$};
+\node[emb, right of=e2, node distance=1.2cm] (e3) {$\bm{v}_{t-1}$};
+\node[emb, right of=e3, node distance=2cm] (e4) {$\bm{v}_{t}$};
+
+\node[below of=e1, node distance=1.5cm] (i1) {$v_1$};
+\node[below of=e2, node distance=1.5cm] (i2) {$\cdots$};
+\node[below of=e4, node distance=1.5cm] (i4) {$v_t$};
+\node[below of=e3, node distance=1.5cm] (i3) {$v_{t-1}$};
+
+\foreach \x in {1,3,4}
+{
+\node[transformer, above of=e\x, node distance=1.2cm] (t\x) {Trm};
+\node[above of=t\x, node distance=1cm] (d\x) {$\vdots$};
+\node[transformer, above of=d\x, node distance=1cm] (tt\x) {Trm};
+\node[below of=e\x, node distance=0.4cm] (add\x) {\huge\textbf{+}};
+}
+
+\draw [decorate, decoration={brace,amplitude=5pt}] ([xshift=-1mm] t1.south west) -- ([xshift=-1mm] tt1.north west) node[midway,xshift=-0.4cm, align=center] (w) {$L\times$};
+    
+    
+\node[posemb, below of=e1, node distance=0.8cm] (pe1) {$\bm{p}_1$};
+\node[below of=e2, node distance=0.8cm] (pe2) {$\cdots$};
+\node[posemb, below of=e3, node distance=0.8cm] (pe3) {$\bm{p}_{t-1}$};
+\node[posemb, below of=e4, node distance=0.8cm] (pe4) {$\bm{p}_{t}$};
+
+\node[proj, above of=tt4, node distance=0.95cm] (proj1) {\scriptsize Projection};
+\node[proj, above of=tt1, node distance=0.95cm] (proj4) {\scriptsize Projection};
+\node[proj, above of=tt3, node distance=0.95cm] (proj3) {\scriptsize Projection};
+
+\node[above of=tt1, node distance=0.8cm] (o1) {};
+\node[above of=tt1, node distance=0.55cm, xshift=0.23cm] (oa1) {\scriptsize$\bm{h}_1^L$};
+\node[above of=tt3, node distance=0.8cm] (o3) {};
+\node[above of=tt3, node distance=0.55cm, xshift=0.35cm] (oa3) {\scriptsize$\bm{h}_{t-1}^L$};
+\node[above of=proj1, node distance=0.8cm] (o4) {$v_{t+1}$};
+\node[above of=proj4, node distance=0.8cm] (o31) {$v_{2}$};
+\node[above of=proj3, node distance=0.8cm] (o11) {$v_{t}$};
+\node[above of=tt4, node distance=0.55cm, xshift=0.25cm] (oa4) {\scriptsize$\bm{h}_{t}^L$};
+
+\draw[FARROW] (tt4) -> (proj1) ;
+\draw[FARROW] (proj1) -> (o4) ;
+\draw[FARROW] (proj4) -> (o31) ;
+\draw[FARROW] (proj3) -> (o11) ;
+\draw[FARROW] (tt1) -> (o1) ;
+\draw[FARROW] (tt3) -> (o3) ;
+
+
+\draw[FARROW] (i1.east) -- ++(0.45, 0) |-  (e1.east) ;
+\draw[FARROW] (i3.east) -- ++(0.3, 0) |-  (e3.east) ;
+\draw[FARROW] (i4.east) -- ++(0.45, 0) |-  (e4.east) ;
+
+\foreach \x in {1,3,4}
+{
+\draw[FARROW] (i\x) -- (pe\x) ;
+}
+
+\draw [decorate, decoration={brace,amplitude=5pt}] ([xshift=-1mm] pe1.south west) -- ([xshift=-1mm] e1.north west) node[midway,xshift=-0.5cm, rotate=90, align=center, font=\scriptsize] (w) {Embedding\\ Layer};
+
+\foreach \x in {1,3,4}
+{
+\foreach \y in {1,3,4}
+{
+    \draw[FARROW] (e\x.north) -> (t\y.south) ;
+    \draw[FARROW] (t\x.north) -> (d\y.south) ;
+    \draw[FARROW] ($(d\x.north)+(0, -0.15)$) -> (tt\y.south) ;
+}
+}
+\node[above of=e2, node distance=1.2cm] (t2) {$\cdots$};
+\node[above of=t2, node distance=1cm] (d2) {$\vdots$};
+\node[above of=d2, node distance=1cm] (tt2) {$\cdots$};
+
+ 
+
+\node[mh, left of=e1, node distance=3.2cm, align=center, font=\scriptsize, yshift=-0.3cm] (trm1) {Multi-Head\\ Attention};
+\node[dropout, above of=trm1, node distance=0.75cm, align=center, font=\scriptsize] (do1) {Dropout};
+\node[norm, above of=do1, node distance=0.6cm, align=center, font=\scriptsize] (n1) {Add \& Norm};
+
+\draw[FARROW] (trm1) edge (do1);
+\draw[FARROW] (do1) edge (n1);
+
+\node[ff, above of=n1, node distance=1cm, align=center, font=\scriptsize] (ff1) {Position-wise\\Feed-Forward};
+\node[dropout, above of=ff1, node distance=0.75cm, align=center, font=\scriptsize] (do2) {Dropout};
+\node[norm, above of=do2, node distance=0.6cm, align=center, font=\scriptsize] (n2) {Add \& Norm};
+
+\draw[FARROW] (n1) edge (ff1);
+\draw[FARROW] (ff1) edge (do2);
+\draw[FARROW] (do2) edge (n2);
+
+\node[below of=trm1, node distance=1.2cm, align=center, font=\small] (input) {input};
+\node[above of=n2, node distance=0.8cm, align=center, font=\scriptsize] (out) {};
+\node[right of=out, node distance=0.7cm, align=center, font=\scriptsize, yshift=-0.35cm] (aa) {Trm};
+
+
+\draw[FARROW] (n2) edge (out);
+\draw[FARROW] (input) edge (trm1);
+
+\draw[FARROW] ($(input.north)-(0,-0.3)$) -- ++(-1, 0) |- (n1.west) ;
+\draw[FARROW] ($(n1.north)-(0,-0.3)$) -- ++(-1, 0) |- (n2.west) ;
+
+\draw[thick,dotted, fill opacity=0.1, fill=bgc]  ($(input.south west)+(-0.8, 0.6)$) rectangle ($(out.north east)+(0.8, -0.6)$);
+
+    
+
+\node[below of=i2, node distance=0.6cm, xshift=1cm] (bert) {(b) BERT4Rec model architecture.};
+\node[left of=bert, node distance=5.4cm] (trm) {(a) Transformer Layer.};
+
+\node[emb, right of=e4, node distance=3cm, yshift=-0.8cm, minimum height=1.2em] (u1) {};
+
+\node[right of=u1, node distance=1.2cm, minimum height=1.2em] (u2) {$\cdots$};
+\node[emb, right of=u2, node distance=1.2cm, minimum height=1.2em] (u3) {};
+\node[emb, right of=u3, node distance=2cm, minimum height=1.2em] (u4) {};
+
+\node[below of=u1, node distance=0.7cm] (ui1) {$v_1$};
+\node[below of=u2, node distance=0.7cm] (ui2) {$\ldots$};
+\node[below of=u4, node distance=0.7cm] (ui4) {$v_{t}$};
+\node[below of=u3, node distance=0.7cm] (ui3) {$v_{t-1}$};
+
+\foreach \x in {1,3,4}
+{
+\node[transformer, above of=u\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (ut\x) {GRU};
+\draw[FARROW] (u\x) edge (ut\x) ;
+}
+\node[above of=u2, node distance=0.8cm] (ut2) {$\ldots$};
+\foreach \x/\y in {1/2, 2/3, 3/4}
+{
+\draw[FARROW] (ut\x) edge (ut\y) ;
+}
+
+\node[above of=ut1, node distance=0.7cm] (utt1) {$v_2$};
+\node[above of=ut2, node distance=0.7cm] (utt2) {$\ldots$};
+\node[above of=ut3, node distance=0.7cm] (utt3) {$v_{t}$};
+\node[above of=ut4, node distance=0.7cm] (utt4) {$v_{t+1}$};
+\foreach \x/\y in {1,3,4}
+{
+\draw[FARROW] ($(ui\x.north)-(0,0.08)$) -> (u\x) ;
+\draw[FARROW] (ut\x) -> ($(utt\x.south)-(0,-0.08)$) ;
+}
+
+\draw[thick,dotted]  ($(ui1.south west)+(-0.4, 0)$) rectangle ($(utt4.north east)+(0.4, 0)$);
+\node[below of=ui2, node distance=0.6cm, xshift=1.1cm] (rnn) {(d) RNN based sequential recommendation methods.};
+
+\foreach \x in {1,3,4}
+{
+\node[emb, above of=utt\x, node distance=2cm, minimum height=1.2em] (sa\x) {};
+\node[transformer, above of=sa\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (st\x) {Trm};
+\node[above of=st\x, node distance=1cm] (sd\x) {$\vdots$};
+\node[transformer, above of=sd\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (stt\x) {Trm};
+}
+\node[below of=sa1, node distance=0.7cm] (si1) {$v_1$};
+\node[below of=sa3, node distance=0.7cm] (si3) {$v_{t-1}$};
+\node[below of=sa4, node distance=0.7cm] (si4) {\color{flamingo}$v_{t}$};
+\node[right of=sa1, node distance=1.2cm, minimum height=1.2em] (sa2) {$\ldots$};
+
+\node[below of=sa2, node distance=0.7cm, minimum height=1.2em] (si2) {$\ldots$};
+\node[above of=sa2, node distance=0.8cm, minimum height=1.2em] (st2) {$\ldots$};
+\node[above of=st2, node distance=0.8cm, minimum height=1.2em] (stt2) {$\ldots$};
+\node[above of=stt1, node distance=0.7cm] (so1) {$v_2$};
+\node[above of=stt3, node distance=0.7cm] (so3) {\color{flamingo}$v_{t}$};
+\node[above of=stt4, node distance=0.7cm] (so4) {$v_{t+1}$};
+
+\foreach \x in {1,3,4}
+{
+\draw[FARROW] ($(si\x.north)-(0,0.08)$) -> (sa\x) ;
+%\draw[FARROW] (sa\x.north) -> (st\x.south) ;
+%\draw[FARROW] (st\x.north) -> (stt\x.south) ;
+\draw[FARROW] (stt\x) -> ($(so\x.south)-(0,-0.08)$) ;
+}
+
+%\foreach \x/\y in {1/3, 1/4, 3/4}
+%{
+%\draw[FARROW] (sa\x.north) -> (st\y.south) ;
+%\draw[FARROW] (st\x.north) -> (stt\y.south) ;
+%}
+
+\foreach \x in {1,3,4}
+{
+\foreach \y in {1,3,4}
+{
+    \draw[FARROW] (sa\x.north) -> (st\y.south) ;
+    \draw[FARROW] (st\x.north) -> (sd\y.south) ;
+\draw[FARROW]  ($(sd\x.north)+(0, -0.15)$) -> (stt\y.south) ;
+}
+}
+
+
+\draw[thick,dotted]  ($(si1.south west)+(-0.4, 0)$) rectangle ($(so4.north east)+(0.4, 0)$);
+\node[below of=si2, node distance=0.6cm, xshift=1cm] (sas) {(c) SASRec model architecture.};
+
+
+
+
+
+\foreach \x in {1,3,4}
+{
+\node[emb, below of=utt\x, node distance=8cm, xshift=-8cm, minimum height=1.2em] (qsa\x) {};
+\node[transformer, above of=qsa\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (qst\x) {Trm};
+\node[above of=qst\x, node distance=1cm] (qsd\x) {$\vdots$};
+\node[transformer, above of=qsd\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (qstt\x) {Trm};
+}
+
+\node[below of=qsa1, node distance=0.7cm] (qsi1) {$v_1$};
+\node[below of=qsa3, node distance=0.7cm] (qsi3) {$v_{t-1}$};
+\node[below of=qsa4, node distance=0.7cm] (qsi4) {$v_{t}$};
+\node[right of=qsa1, node distance=1.2cm, minimum height=1.2em] (qsa2) {$\ldots$};
+
+\node[below of=qsa2, node distance=0.7cm, minimum height=1.2em] (qsi2) {$\ldots$};
+\node[above of=qsa2, node distance=0.8cm, minimum height=1.2em] (qst2) {$\ldots$};
+\node[above of=qst2, node distance=0.8cm, minimum height=1.2em] (qstt2) {$\ldots$};
+%\node[above of=qstt1, node distance=0.7cm] (qso1) {$v_2$};
+%\node[above of=qstt3, node distance=0.7cm] (qso3) {$v_{t}$};
+\node[above of=qstt4, node distance=0.7cm] (qso4) {$v_{t+1}$};
+
+\foreach \x in {1,3,4}
+{
+\draw[FARROW] ($(qsi\x.north)-(0,0.08)$) -> (qsa\x) ;
+%\draw[FARROW] (sa\x.north) -> (st\x.south) ;
+%\draw[FARROW] (st\x.north) -> (stt\x.south) ;
+
+}
+\draw[FARROW] (qstt4) -> ($(qso4.south)-(0,-0.08)$) ;
+
+%\foreach \x/\y in {1/3, 1/4, 3/4}
+%{
+%\draw[FARROW] (sa\x.north) -> (st\y.south) ;
+%\draw[FARROW] (st\x.north) -> (stt\y.south) ;
+%}
+
+\foreach \x in {1,3,4}
+{
+\foreach \y in {1,3,4}
+{
+    \draw[FARROW] (qsa\x.north) -> (qst\y.south) ;
+    \draw[FARROW] (qst\x.north) -> (qsd\y.south) ;
+\draw[FARROW]  ($(qsd\x.north)+(0, -0.15)$) -> (qstt\y.south) ;
+}
+}
+
+
+
+%\foreach \x in {1,3,4}
+%{
+%\node[emb, below of=utt\x, node distance=8cm, xshift=-8cm, minimum height=1.2em] (qsa\x) {};
+%\node[transformer, above of=qsa\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (qst\x) {Trm};
+%\node[above of=qst\x, node distance=1cm] (qsd\x) {$\vdots$};
+%\node[transformer, above of=qsd\x, node distance=0.8cm, minimum height=1.2em, inner sep=0, outer sep=0] (qstt\x) {Trm};
+%}
+%
+%\node[below of=qsa1, node distance=0.7cm] (qsi1) {$v_1$};
+%\node[below of=qsa3, node distance=0.7cm] (qsi3) {$v_{t-1}$};
+%\node[below of=qsa4, node distance=0.7cm] (qsi4) {$v_{t}$};
+%\node[right of=qsa1, node distance=1.2cm, minimum height=1.2em] (qsa2) {$\ldots$};
+%
+%\node[below of=qsa2, node distance=0.7cm, minimum height=1.2em] (qsi2) {$\ldots$};
+%\node[above of=qsa2, node distance=0.8cm, minimum height=1.2em] (qst2) {$\ldots$};
+%\node[above of=qst2, node distance=0.8cm, minimum height=1.2em] (qstt2) {$\ldots$};
+%\node[above of=qstt1, node distance=0.7cm] (qso1) {$v_2$};
+%\node[above of=qstt3, node distance=0.7cm] (qso3) {$v_{t}$};
+%\node[above of=qstt4, node distance=0.7cm] (qso4) {$v_{t+1}$};
+%
+%\foreach \x in {1}
+%{
+%\draw[FARROW] ($(qsi\x.north)-(0,0.08)$) -> (qsa\x) ;
+%%\draw[FARROW] (sa\x.north) -> (st\x.south) ;
+%%\draw[FARROW] (st\x.north) -> (stt\x.south) ;
+%\draw[FARROW] (qstt\x) -> ($(qso\x.south)-(0,-0.08)$) ;
+%}
+%
+%%\foreach \x/\y in {1/3, 1/4, 3/4}
+%%{
+%%\draw[FARROW] (sa\x.north) -> (st\y.south) ;
+%%\draw[FARROW] (st\x.north) -> (stt\y.south) ;
+%%}
+%
+%\foreach \x in {1,3,4}
+%{
+%\foreach \y in {1,3,4}
+%{
+%    \draw[FARROW] (qsa\x.north) -> (qst\y.south) ;
+%    \draw[FARROW] (qst\x.north) -> (qsd\y.south) ;
+%\draw[FARROW]  ($(qsd\x.north)+(0, -0.15)$) -> (qstt\y.south) ;
+%}
+%}
+
+\end{tikzpicture}
+\caption{Example}
+\label{fig:model}
+\end{figure*}
+
+
+\end{document}

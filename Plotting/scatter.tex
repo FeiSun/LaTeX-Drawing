@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+
+\usepackage{pgfplots}
+%\pgfplotsset{compat=1.14}
+
+\input{color.tex}
+
+\begin{document}
+
+
+\pgfplotsset{
+axis background/.style={fill=gallery},
+grid=both,
+  xtick pos=left,
+  ytick pos=left,
+  y label style={at={(0.03,0.5)}},
+  tick style={
+    major grid style={style=white,line width=1pt},
+    minor grid style=gallery,
+    draw=none
+    },
+  minor tick num=1,
+  ymajorgrids,
+	major grid style={draw=white},
+	y axis line style={opacity=0},
+	tickwidth=0pt,
+}
+
+
+%diamond*, triangle*, square, pentagon, *
+
+\begin{figure}
+\centering
+    \begin{tikzpicture}[]
+	\begin{axis}[
+	   nodes near coords, 
+	   every node near coord/.append style={anchor=west, font=\tiny},
+	   ymin=87, ymax=90.8,
+	   xmode=log,
+	   enlargelimits=0.2,
+	   xlabel=\small Percentage,
+       ylabel=\small GLUE Average score,
+       ]
+
+        \addplot[
+        scatter,
+        only marks,
+        fill=flamingo,
+        point meta=explicit symbolic
+        ]
+        coordinates {
+        (0.0028307, 87.01) [vanilla prompt tuning]
+        (0.003048, 89.5) [IDPG-PHM]
+        (0.003103, 89.08) [compacter]
+        (0.0070423, 89.74) [IDPG-DNN]
+        (0.020282, 90.52) [adapter-houlsby]
+        
+        };
+
+        \addplot[
+        mark=*,
+        draw opacity=0,
+        fill=summer_sky,
+        only marks,
+        mark size=3pt,
+        point meta=explicit symbolic,
+        every node near coord/.append style={yshift=-0.4mm,anchor=north, font=\tiny}
+        ]
+        coordinates {
+        (100, 90.68) [RoBERTa-FT]
+        };
+
+        \draw[dotted, thick] (-7, 180) rectangle (-1, 300);
+
+        \end{axis}
+\end{tikzpicture}
+    \caption{Example for groupplot and line chart.}
+    \label{fig:example}
+\end{figure}
+
+
+
+
+\end{document}

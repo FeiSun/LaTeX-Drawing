@@ -1,0 +1,252 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{CJKutf8}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{scalerel}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc, tikzmark, shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata, tikzmark, decorations.pathreplacing, patterns}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{intersections}
+\usepackage{tkz-euclide}
+
+\input{color}
+
+\begin{document}
+
+\tikzset{
+  emb/.style = {rectangle, fill=tomato, minimum width=1em, minimum height=2em},
+  tit/.style = {text depth=.25ex, text height=1.5ex, inner sep=0, outer sep=0},
+  barbox/.style={rectangle, inner sep=0, outer sep=0, fill=padua, anchor=south, minimum width=2mm},
+  bemb/.style = {rectangle, fill=flamingo, minimum width=1em, minimum height=2em},
+  bbarbox/.style={rectangle, inner sep=0, outer sep=0, fill=shakespeare, anchor=south, minimum width=2mm},
+  dec/.style = {rectangle, fill=my_sin, minimum width=1em, minimum height=2em},
+  tcv/.style = {rectangle, fill=carmine_pink, minimum width=1em, minimum height=2em},
+  fd/.style={rectangle, inner sep=0, outer sep=0, fill=padua, anchor=south, minimum width=2mm},
+}
+
+\begin{figure*}[]
+  \centering
+  \resizebox{0.9\textwidth}{!}{
+  \begin{tikzpicture}[]
+  \tikzstyle{every node}=[font=\scriptsize]
+  
+  
+    \node[emb] (e1) at (0, 0) {};
+    \foreach \x/\y in {1/2, 2/3, 3/4, 4/5, 5/6, 6/7, 7/8, 8/9} %, 9/10
+    {
+    \node[emb, right of=e\x, node distance=1cm] (e\y) {};
+    }
+    \node[emb, fill=white, right of=e9, node distance=1cm] (e10) {$\cdots$};
+    \node[right of=e10, node distance=5mm, yshift=3mm] (ae10) {\normalsize$\bm{h}$};
+    
+    \node[below of=e1, node distance=1cm] (i1) {\begin{CJK*}{UTF8}{gkai}任天堂\end{CJK*}};
+    \node[below of=e2, node distance=1cm] (i2) {switch};
+    \node[below of=e3, node distance=1cm] (i3) {\begin{CJK*}{UTF8}{gkai}主机\end{CJK*}};
+    \node[below of=e4, node distance=1cm] (i4) {\begin{CJK*}{UTF8}{gkai}全新\end{CJK*}};
+    \node[below of=e5, node distance=1cm] (i5) {\begin{CJK*}{UTF8}{gkai}一代\end{CJK*}};
+    \node[below of=e6, node distance=1cm] (i6) {\begin{CJK*}{UTF8}{gkai}游戏机\end{CJK*}};
+    \node[below of=e7, node distance=1cm] (i7) {\begin{CJK*}{UTF8}{gkai}体感\end{CJK*}};
+    \node[below of=e8, node distance=1cm] (i8) {\begin{CJK*}{UTF8}{gkai}家用\end{CJK*}};
+    \node[below of=e9, node distance=1cm] (i9) {\begin{CJK*}{UTF8}{gkai}电视\end{CJK*}};
+    %\node[below of=e10, node distance=1cm] (i10) {\begin{CJK*}{UTF8}{gkai}掌机\end{CJK*}};
+    \node[below of=e10, node distance=1cm] (i10) {$\cdots$};
+    \node[tit, below of=i1, node distance=0.25cm] (j1) {Nintendo};
+    \node[tit, below of=i2, node distance=0.25cm] (j2) {switch};
+    \node[tit, below of=i3, node distance=0.25cm] (j3) {console};
+    \node[tit, below of=i4, node distance=0.25cm] (j4) {new};
+    \node[tit, below of=i5, node distance=0.25cm] (j5) {generation};
+    \node[tit, below of=i6, node distance=0.25cm] (j6) {console};
+    \node[tit, below of=i7, node distance=0.25cm] (j7) {motion};
+    \node[tit, below of=i8, node distance=0.25cm] (j8) {home};
+    \node[tit, below of=i9, node distance=0.25cm] (j9) {video};
+    %\node[tit, below of=i10, node distance=0.25cm] (j10) {handheld};
+    \node[below of=i10, node distance=0.25cm] (j10) {$\cdots$};
+    
+    \foreach \x in {1,...,10}
+    {
+    \draw[-Latex] (i\x) edge (e\x) ;
+    }
+    
+    \draw [thick,decorate,decoration={brace,amplitude=5pt}, tomato] ([xshift=-1mm] e1.south west) -- ([xshift=-1mm] e1.north west) node[midway,xshift=-0.7cm, rotate=90, align=center, tomato] (w) {Ecoder\\ Hidden\\State};
+    
+    \draw [thick,decorate,decoration={brace,amplitude=8pt,mirror}] (j1.south west) -- (j10.south east) node[midway,yshift=-0.4cm] (w) {\normalsize ~~~~Source Title ($\mathcal{S}$)};
+    
+    
+    \node[barbox, minimum height=5mm] (a1) at ([shift={(90:1)}]e1) {};
+    \node[barbox, minimum height=12mm] (a2) at ([shift={(90:1)}]e2) {};
+    \node[barbox, minimum height=2.3mm] (a3) at ([shift={(90:1)}]e3) {};
+    \node[barbox, minimum height=1.2mm] (a4) at ([shift={(90:1)}]e4) {};
+    \node[barbox, minimum height=0.9mm] (a5) at ([shift={(90:1)}]e5) {};
+    \node[barbox, minimum height=2.1mm] (a6) at ([shift={(90:1)}]e6) {};
+    \node[barbox, minimum height=1.6mm] (a7) at ([shift={(90:1)}]e7) {};
+    \node[barbox, minimum height=1.5mm] (a8) at ([shift={(90:1)}]e8) {};
+    \node[barbox, minimum height=1.4mm] (a9) at ([shift={(90:1)}]e9) {};
+    %\node[barbox, minimum height=2mm] (a10) at ([shift={(90:1)}]e10) {};
+    \node[barbox, fill=white] (a10) at ([shift={(90:1)}]e10) {$\cdots$};
+    
+    \foreach \x in {1,...,10}
+    {
+    \draw[-Latex] (e\x) edge (a\x) ;
+    }
+    
+    \node[emb, fill=padua!20!tomato, above of=a5, node distance = 1.7cm, xshift=0.5cm] (t_cv){}; %label={0:context vector}
+    \node[right of=t_cv, node distance = 2em, align=left] (at_cv) {context\\ vector};
+    \foreach \x in {1,...,10}
+    {
+      \draw[-{Latex[length=1mm, width=0.4mm]}, loosely dashed] (a\x.north) -> (t_cv.south) ;
+      \draw[-{Latex[length=1mm, width=0.4mm]}, dotted] (e\x.north) -> (t_cv.south) ;
+    }
+    
+    
+    \draw [thick,decorate,decoration={brace,amplitude=5pt}, padua] ([xshift=-2mm, yshift=-1mm] a1.south west) -- ([xshift=-2mm, yshift=8mm] a1.north west) node[midway,xshift=-0.55cm, rotate=90, align=center, padua] (tad) {Attention\\Distribution};
+    
+    \path[-, draw=padua] ([xshift=-2mm] a1.south west) edge ([xshift=1mm] a10.south east);
+    
+    
+    \node[bemb, below of=j6, node distance=4cm] (b1) {};
+    \node[bemb, right of=b1, node distance=1cm] (b2) {};
+    \node[bemb, right of=b2, node distance=1cm] (b3) {};
+    \node[bemb, right of=b3, node distance=1cm] (b5) {};
+    \node[bemb, right of=b5, node distance=1cm] (b4) {};
+    \node[right of=b4, node distance=5mm, yshift=3mm] (ab4) {\normalsize$\bm{h}^{\prime}$};
+    
+    \node[below of=b1, node distance=1cm] (bi1) {Nintendo};
+    \node[below of=b2, node distance=1cm] (bi2) {/};
+    \node[below of=b3, node distance=1cm] (bi3) {\begin{CJK*}{UTF8}{gkai}任天堂\end{CJK*}};
+    \node[below of=b5, node distance=1cm] (bi5) {/};
+    \node[below of=b4, node distance=1cm] (bi4) {\begin{CJK*}{UTF8}{gkai}游戏机\end{CJK*}};
+    \node[tit, below of=bi1, node distance=0.25cm] (jb1) {Nintendo};
+    \node[tit, below of=bi2, node distance=0.25cm] (jb2) {/};
+    \node[tit, below of=bi3, node distance=0.25cm] (jb3) {Nintendo};
+    \node[tit, below of=bi5, node distance=0.25cm] (jb5) {/};
+    \node[tit, below of=bi4, node distance=0.25cm] (jb4) {console};
+    
+    \node[bbarbox, minimum height=4.5mm] (ab1) at ([shift={(90:1)}]b1) {};
+    \node[bbarbox, minimum height=0.8mm] (ab2) at ([shift={(90:1)}]b2) {};
+    \node[bbarbox, minimum height=5mm] (ab3) at ([shift={(90:1)}]b3) {};
+    \node[bbarbox, minimum height=1mm] (ab5) at ([shift={(90:1)}]b5) {};
+    \node[bbarbox, minimum height=2mm] (ab4) at ([shift={(90:1)}]b4) {};
+    
+    \path[-, draw=shakespeare] ([xshift=-2mm] ab1.south west) edge ([xshift=2mm] ab4.south east);
+    \draw [thick,decorate,decoration={brace,amplitude=8pt,mirror}] (jb1.south west) -- (jb4.south east) node[midway,yshift=-0.5cm] (w) {\normalsize ~~~~~Background Knowledge ($\mathcal{K}$)};
+    \draw [thick,decorate,decoration={brace,amplitude=5pt}, flamingo] ([xshift=-1mm] b1.south west) -- ([xshift=-1mm] b1.north west) node[midway,xshift=-0.7cm, rotate=90, align=center, flamingo] (w) {Ecoder\\ Hidden\\State};
+    \draw [thick,decorate,decoration={brace,amplitude=5pt}, shakespeare] ([xshift=-2mm, yshift=-1mm] ab1.south west) -- ([xshift=-2mm, yshift=6mm] ab1.north west) node[midway,xshift=-0.55cm, rotate=90, align=center, shakespeare] (bad) {Attention\\Distribution};
+    
+    \foreach \x in {1,...,5}
+    {
+    \draw[-Latex] (b\x) edge (ab\x) ;
+    \draw[-Latex] (bi\x) edge (b\x) ;
+    }
+    \foreach \x/\y in {1/2, 2/3, 3/5, 5/4}
+    {
+    \draw[-Latex] (b\x) edge (b\y) ;
+    }
+    
+    
+    \node[dec, below of=j1, node distance=2cm, xshift=11.5cm] (d1) {};
+    \node[dec, right of=d1, node distance=1cm] (d2) {};
+    
+    \node[below of=d1, node distance=1cm] (di1) {$<$S$>$};
+    \node[below of=d2, node distance=1cm] (di2) {\begin{CJK*}{UTF8}{gkai}任天堂\end{CJK*}};
+    \node[tit, below of=di1, node distance=0.25cm] (jd1) {$<$S$>$};
+    \node[tit, below of=di2, node distance=0.25cm] (jd2) {Nintendo};
+    
+    \draw [thick,decorate,decoration={brace,amplitude=5pt, mirror}, my_sin] ([xshift=1mm] d2.south east) -- ([xshift=1mm] d2.north east) node[midway,xshift=0.4cm, rotate=-90, align=center, my_sin] (w) {Decoder Hidden States};
+    
+    \draw [thick,decorate,decoration={brace,amplitude=6pt,mirror}] (jd1.south west) -- (jd2.south east) node[midway,yshift=-0.6cm, align=center] (w) {\normalsize Partial\\ \normalsize Summary};
+    
+    \draw[-Latex] (d1) edge (d2) ;
+    \foreach \x in {1,2}
+    {
+    \draw[-Latex] (di\x) edge (d\x) ;
+    }
+    \node[right of=d2, node distance=3mm, yshift=6mm] (ad2) {\normalsize$\bm{d}_t$};
+    
+    %\draw[-Latex, to path={-| (\tikztotarget)}] (e10) edge (d1) ;
+    
+    \node[inner sep=0, outer sep=0, left of=d1, node distance=2cm] (loc) {};
+    
+    \draw[-Latex, thick] (e10) -- ++(1.2, 0) -- ++(0, -3.2) -> ++(1.1, 0);
+    \draw[-Latex, thick] (b4) -- ++(1.2, 0) -- ++(0, 1.9) -> ++(1.1, 0);
+    
+    \draw[-Latex] ($(d2.north)+(0.07,0)$) -- ++(0, 3.92) -- ++(-3.2, 0) ;
+    
+    \draw[-Latex, draw=white, double=black, double distance=\pgflinewidth, ultra thick] ($(d2.north)-(0.07,0)$) -- ++(0, 0.3) -- ++(-2.6, 0) -- ++(0, -1.63) -> ++(-0.5, 0);
+    \draw[-Latex] ($(d2.north)-(0.07,0)$) -- ++(0, 0.3) -- ++(-2.6, 0) -- ++(0, -1.63) -> ++(-0.45, 0);
+    
+    \node[tcv, fill=flamingo!80!shakespeare,above of=ab2, node distance = 1.3cm, xshift=0.5cm] (b_cv){};
+    \node[right of=b_cv, node distance = 2em, align=left] (ab_cv) {context\\ vector};
+    \foreach \x in {1,...,5}
+    {
+      \draw[-{Latex[length=1mm, width=0.4mm]}, loosely dashed] (ab\x.north) -> (b_cv.south) ;
+      \draw[-{Latex[length=1mm, width=0.4mm]}, dotted] (b\x.north) -> (b_cv.south) ;
+    }
+    
+    \node[circle, fill=mountain_meadow, left of=b_cv, node distance=4.5cm, minimum size=0.618cm] (p) {\normalsize$\lambda$};
+    
+    \draw[-Latex, draw=white, double=black, double distance=\pgflinewidth, ultra thick] (d2.north) -- ++(0, 0.6) -- ++(-10, 0) -- (p.north east);
+    \draw[-Latex, thick] (d2.north) -- ++(0, 0.6) -- ++(-10, 0) -> (p.north east); %my_sin
+    \draw[-Latex, thick] (b_cv) -> (p);
+    \draw[-Latex, thick] (t_cv) -- ++(-3, 0) -- ++(0, -5) -> (p.north west);
+    
+    \node[rectangle, minimum height=0.8em, minimum width=1.6em, inner sep=0, outer sep=0, draw=mountain_meadow, below of=p, node distance=0.9cm] (pb) {$\times (1-\lambda)$} ;
+    \node[rectangle, minimum height=0.8em, minimum width=1.6em, inner sep=0, outer sep=0, draw=mountain_meadow, left of=p, node distance=4.3cm, rotate=-90] (pt) {$\times \lambda$} ;
+    
+    \node[barbox, below of=j1, node distance=4cm, minimum height=5mm, xshift=-15mm] (fd1) {}; %任天堂
+    \node[bbarbox, minimum height=1.0mm] (fdb1) at ([shift={(90:2.5mm)}]fd1) {};
+    \node[barbox, right=2.5mm of fd1.south, anchor=south, minimum height=9.6mm] (fd2) {}; %switch
+    \node[barbox, right=2.5mm of fd2.south, anchor=south, minimum height=1.84mm] (fd3) {}; %主机
+    \node[barbox, right=2.5mm of fd3.south, anchor=south, minimum height=0.96mm] (fd4) {};
+    \node[barbox, right=2.5mm of fd4.south, anchor=south, minimum height=0.72mm] (fd5) {};
+    \node[barbox, right=2.5mm of fd5.south, anchor=south, minimum height=1.76mm] (fd12) {}; %游戏机
+    \node[barbox, right=2.5mm of fd12.south, anchor=south, minimum height=1.28mm] (fd6) {};
+    \node[barbox, right=2.5mm of fd6.south, anchor=south, minimum height=1.2mm] (fd7) {};
+    \node[barbox, right=2.5mm of fd7.south, anchor=south, minimum height=1.12mm] (fd8) {};
+    \node[barbox, right=2.5mm of fd8.south, anchor=south, minimum height=1.6mm] (fd9) {};
+    \node[bbarbox, right=2.5mm of fd9.south, anchor=south, minimum height=0.9mm] (fd10) {};
+    \node[bbarbox, right=2.5mm of fd10.south, anchor=south, minimum height=0.4mm] (fd11) {};
+    
+    \path[-, draw=shakespeare!50!padua] ([xshift=-1mm] fd1.south west) edge ([xshift=1mm] fd11.south east);
+    \node[below of=fd1, node distance=4mm, shakespeare!50!padua] (v1) {\begin{CJK*}{UTF8}{gkai}\tiny 任天堂\end{CJK*}} ;
+    \node[below of=fd11, node distance=1.5mm, shakespeare!50!padua] (v11) {/} ;
+    \draw[latex'-latex', dashed, shakespeare!50!padua] (v1) -- (v11);
+    
+    \draw [thick,decorate,decoration={brace,amplitude=6pt, mirror}] ([xshift=-2mm, yshift=-3mm] fd1.south west) -- ([xshift=2mm, yshift=-3mm] fd11.south east) node[midway,yshift=-8mm, align=center] (w) {\normalsize Output Distribution\\$\lambda\!\! \displaystyle\sum_{i:w_i{=}w}\!\!\! a_{ti} + (1{-}\lambda)\!\!\displaystyle\sum_{j:w_j{=}w}\!\!\! a^{\prime}_{tj}$};
+    
+    \node[above right=7mm of fd2] (v2l) {``switch''} ;
+    \draw[-Latex] (fd2.north) -> (v2l);
+    
+    \draw[-Latex, mountain_meadow, thick] (p) -> (pb);
+    \draw[-Latex, mountain_meadow, thick] (p) -> (pt);
+    \draw[thick] (bad) -- ++(-1.6,0);
+    \draw[thick] (tad) -- ++(-1.45, 0) -- (pt);
+    \draw[-Latex, thick] (pb) -- ++(0, -1.69) -> ++(-0.5, 0);
+    \draw[-Latex, thick] (pt) -- ++(0, -2.59) -> ++(0.5, 0);
+    
+    \node[left of=tad, node distance=8mm, yshift=2mm] (atad) {\normalsize$\bm{a}_t$};
+    \node[left of=bad, node distance=8mm, yshift=2.5mm] (abad) {\normalsize$\bm{a}^{\prime}_t$};
+    \node[left of=t_cv, node distance=6mm, yshift=2mm] (at_cv) {\normalsize$\bm{c}_t$};
+    \node[left of=b_cv, node distance=6mm, yshift=2.5mm] (ab_cv) {\normalsize$\bm{c}^{\prime}_t$};
+    
+    \draw[-Latex, draw=white, double=black, double distance=\pgflinewidth, thick] (e2) -- (e3);
+    \foreach \x/\y in {1/2, 2/3, 3/4, 4/5, 5/6, 6/7, 7/8, 8/9, 9/10}
+    {
+    \draw[-Latex] (e\x) edge (e\y) ;
+    }
+    
+    \draw [thick,draw=white, double=black, double distance=\pgflinewidth, thick, decorate,decoration={brace,amplitude=8pt,mirror}] (j1.south west) -- (j10.south east);
+    
+  \end{tikzpicture}
+  }
+  \caption{Example}
+  \label{fig:ms_ptr}
+\end{figure*}
+
+
+\end{document}
