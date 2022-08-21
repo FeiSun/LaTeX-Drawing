@@ -1,0 +1,91 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{scalerel}
+
+\usepackage{pgfgantt}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc, tikzmark, shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata, tikzmark, decorations.pathreplacing, patterns}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{intersections}
+\usepackage{tkz-euclide}
+
+\input{color}
+
+\begin{document}
+
+
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[]
+
+    \node[align=center] at (-1,-0.5) (o) {Task Name};
+
+\begin{ganttchart}[%Specs
+    y unit title=0.5cm,
+    y unit chart=0.7cm,
+    % vgrid,
+    hgrid,
+    hgrid, %style/.style={draw=black, line width=.2pt},
+    title height=1,
+    % title/.style={fill=none},
+    title label font=\bfseries\footnotesize,
+    bar/.style={fill=french_blue, yshift=0.2em},
+    bar height=0.618,
+    bar label font=\normalsize,
+%   progress label text={},
+    % group right shift=0,
+    % group top shift=0.7,
+    % group height=.3,
+    % group peaks width={0.2},
+    inline]{1}{36}
+   %labels
+%    \gantttitle{A two-years project}{24}\\  % title 1
+   \gantttitle[]{2023}{12}                 % title 2
+   \gantttitle[]{2024}{12}
+   \gantttitle[]{2025}{12} \\              
+   \gantttitle{Q1}{3}                      % title 3
+   \gantttitle{Q2}{3}
+   \gantttitle{Q3}{3}
+   \gantttitle{Q4}{3}
+   \gantttitle{Q1}{3}
+   \gantttitle{Q2}{3}
+   \gantttitle{Q3}{3} 
+   \gantttitle{Q4}{3}
+   \gantttitle{Q1}{3}
+   \gantttitle{Q2}{3}
+   \gantttitle{Q3}{3} 
+   \gantttitle{Q4}{3}\\
+   % Setting group if any
+%    \ganttgroup[inline=false]{Group 1}{2}{5}\\ 
+   \ganttbar[inline=false]{Planning}{2}{4}\\ %progress=100,
+   \ganttmilestone[inline=false]{Milestone 1}{9} \\
+
+%    \ganttgroup[inline=false]{Group 2}{6}{12} \\ 
+   \ganttbar[inline=false, bar/.append style={shape=ellipse, fill=mona_lisa, dashed}]{test1}{10}{19} \\
+   \ganttmilestone[inline=false]{Milestone 2}{17} \\
+   \ganttbar[inline=false]{test2}{11}{20} \\
+   \ganttmilestone[inline=false]{Milestone 3}{22} \\       
+
+%    \ganttgroup[inline=false]{Group 3}{13}{24} \\ 
+   \ganttbar[progress=90,inline=false]{Task A}{13}{15} \\ 
+   \ganttbar[progress=50,inline=false, bar progress label node/.append style={below left= 10pt and 7pt}]{Task B}{13}{24} \\ \\
+   \ganttbar[progress=30,inline=false]{Task C}{15}{16}\\ 
+   \ganttbar[progress=70,inline=false]{Task D}{18}{20} \\ 
+
+   \ganttbar[inline=false]{Task A}{25}{30} \\ 
+   \ganttbar[inline=false, bar progress label node/.append style={below left= 10pt and 7pt}]{Task B}{26}{32} \\ 
+   \ganttbar[inline=false]{Task C}{30}{35}\\ 
+   \ganttbar[inline=false]{Task D}{32}{36} 
+\end{ganttchart}
+\end{tikzpicture}
+}
+
+
+
+\end{document}
