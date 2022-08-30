@@ -1,0 +1,159 @@
+
+\documentclass[nonacm]{acmart}
+
+%
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{bm}
+%\usepackage{scalerel}
+
+\usepackage{tikz}
+\usepackage{tikzpeople}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc,tikzmark,shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata,tikzmark,decorations.pathreplacing,patterns}
+
+\input{color}
+
+\makeatletter
+\let\ACM@origbaselinestretch\baselinestretch
+\makeatother
+
+
+\begin{document}
+
+
+\tikzset{
+  FARROW/.style={arrows={-{Latex[length=1.25mm, width=1.mm]}}, thick},
+  user/.style = {circle, fill=salmon!72, draw=salmon!400, minimum width=0.8em, align=center, inner sep=0, outer sep=0},
+  item/.style = {circle, fill=monte_carlo!72, draw=monte_carlo!400, minimum width=0.8em, align=center, inner sep=0, outer sep=0},
+  model/.style = {rectangle, minimum width=2.5em, minimum height=1.8em, align=center, inner sep=2, outer sep=0, font=\normalsize, rounded corners=1},
+  data/.style = {rectangle, fill=egg_shell, draw=egg_shell!400, minimum width=1.6cm, minimum height=2.4cm, inner sep=0.3em, rounded corners=4},
+}
+
+\begin{figure}
+\centering
+\resizebox{0.99\linewidth}{!}{
+    \begin{tikzpicture}
+        
+    \node[rectangle, fill=athens_gray, draw, minimum width=12em, minimum height=2em,align=center, inner sep=1.2mm, outer sep=1, rounded corners=2] (o) at (0, 0) {Original training data};
+%    \node[above of=o, node distance=0.9cm, align=center] (sdots) {\Large $\cdots$};
+    
+    % M2    
+    \node[above of=o, node distance=2.5cm, align=center] (p) {\Large $\cdots$};
+    \node[item, left of=p, node distance=0.8cm, yshift=0.25cm] (m2i2) {};
+    \node[item, left of=p, node distance=0.8cm, yshift=-0.25cm] (m2i3) {};
+    \node[item, above of=m2i2, node distance=0.5cm] (m2i1) {};
+    \node[item, below of=m2i3, node distance=0.5cm] (m2i4) {};
+    \node[user, left of=m2i2, node distance=1cm, yshift=0.2cm] (m2u1) {};
+    \node[user, below of=m2u1, node distance=0.5cm] (m2u2) {};
+    \node[user, below of=m2u2, node distance=0.5cm] (m2u3) {};
+    
+    \draw[] (m2u1) -- (m2i2) --(m2u3) -- (m2i1);
+    \draw[] (m2u1) -- (m2i3) -- (m2u2) -- (m2i4);
+    
+    \begin{scope}[on background layer]
+     \node [data, fill=chardonnay!42, draw=chardonnay!200, fill opacity=1, fit={(m2u3) (m2i1) (m2i4)}] (s2) {};
+     \end{scope}
+     
+     % s1
+     \foreach \x in {1,2,3,4}
+     {
+        \node[item, left of=m2i\x, node distance=2.2cm] (m1i\x) {};
+     } 
+     \node[user, left of=m1i1, node distance=1cm, yshift=-0.25cm] (m1u1) {};
+     \node[user, left of=m1i3, node distance=1cm, yshift=-0.25cm] (m1u2) {};
+     \draw[] (m1u1) -- (m1i1);
+     \draw[] (m1u1) -- (m1i2) -- (m1u2);
+     \draw[] (m1u1) -- (m1i3) --(m1u2);
+     \draw[] (m1u2) -- node[] (un_edge) {} (m1i4) ;
+     
+     \begin{scope}[on background layer]
+        \node [data, fill=Madang!42, draw=Madang!400, fit={(m1u1) (m1i1) (m1i4)}] (s1) {};
+     \end{scope}
+     
+     
+     % d 3
+     \node[user, right of=p, node distance=0.8cm] (m3u2) {};
+     \node[user, above of=m3u2, node distance=0.6cm] (m3u1) {};
+     \node[user, below of=m3u2, node distance=0.6cm] (m3u3) {};
+     \foreach \x in {1,2,3}
+     {
+        \node [item, right of=m3u\x, node distance=1cm] (m3i\x) {};
+     } 
+     \begin{scope}[on background layer]
+        \node [data, fill=fog!42, draw=fog!400, fill opacity=1, fit={(m3u3) (m3i1)}] (s3) {};
+     \end{scope}
+     
+     
+     \draw[] (m3u1) -- (m3i1) -- (m3u3) -- (m3i3) -- (m3u2) -- (m3i2) -- (m3u3);
+     
+     \foreach \x in {1,2,3}
+     {
+        \node [item, right of=m3i\x, node distance=2.2cm] (m4i\x) {};
+     } 
+     \foreach \x in {1,2,3,4}
+     {
+        \node [user, right of=m2i\x, node distance=3.8cm] (m4u\x) {};
+     } 
+     \draw[] (m4u1) -- (m4i2) -- (m4u3) -- (m4i3) -- (m4u1);
+     \draw[] (m4u2) -- (m4i1) -- (m4u4) -- (m4i2);
+     \begin{scope}[on background layer]
+        \node [data, fill=maya_blue!28, draw=maya_blue!400, fill opacity=1, fit={(m4u1) (m4u4) (m4i1)}] (sK) {};
+     \end{scope}
+     
+     \foreach \x in {1,2,K}
+     {
+        \node[above of=s\x, node distance=1.4cm, xshift=0.3cm] (sa\x) {\small $S_{\x}$};
+     }
+     \node[above of=s3, node distance=1.4cm, xshift=0.4cm] (sa3) {\small $S_{K-1}$};
+     
+     % Model
+     \node [model, fill=Madang!42, draw=Madang!400, above of=s1, node distance=2.4cm] (m1) {$M_{1}$};
+     \node [model, fill=chardonnay!42, draw=chardonnay!300, above of=s2, node distance=2.4cm] (m2) {$M_{2}$};
+     \node [model, fill=fog!42, draw=fog!400, draw, above of=s3, node distance=2.4cm] (m3) {$M_{K-1}$};
+     \node [model, fill=maya_blue!28, draw=maya_blue!400, above of=sK, node distance=2.4cm] (mK) {$M_{K}$};
+     \node[above of=p, node distance=2.35cm, align=center] (mdot) {\Large $\cdots$};
+%     \node[above of=mdot, node distance=0.6cm, align=center] (adots) {\Large $\cdots$};
+     
+     \node[rectangle, above of=o, node distance=6.5cm, fill=platinum!80!aluminum, draw, minimum width=12em, minimum height=2em,align=center, inner sep=1.2mm, outer sep=1, rounded corners=2] (agg)  {Attention-based adaptive Aggregation};
+      \foreach \x in {1,2,3,K}
+     {
+        \draw[FARROW] (o.north) -> (s\x.south);
+        \draw[FARROW] (s\x.north) -> (m\x.south);
+        \draw[FARROW] (m\x.north) -> (agg.south);
+     }
+     \node[circle, draw, above of=agg, node distance=1.2cm] (output)  {$\times$};
+     \draw[FARROW] (agg.north) -> (output.south);
+     
+     
+     %% annotation
+%     \node[left of=output, node distance=4.2cm, align=left] (ma)  {\small $S_i$: $i$-th data shard\\\small $M_i$: $i$-th shard model};
+%     \node[above of=ma, node distance=0.5cm] (sa)  {$S_i$: $i$-th data shard};
+    \node[left of=output, node distance=3.5cm, align=left] (ma)  {\small$\begin{aligned}
+         S_i\!:& ~i\text{-th data shard}\\
+         M_i\!:& ~i\text{-th shard model} \\ 
+         :& ~\text{data to unlearn}
+         \end{aligned}$};
+    \node[ellipse, draw=alizarin!120, dashed, thick, left of=output, node distance=4.7cm, align=left, yshift=-0.4cm, minimum height=2mm, minimum width=6mm, inner sep=0, outer sep=0] (una) {};
+    \begin{scope}[on background layer]
+        \node[draw, fit={([xshift=-1mm, yshift=-1mm] ma.north east) (una)}, dashed, fill=gallery!42, inner sep=0.4em] {};
+     \end{scope}
+     
+     \node[ellipse, draw=alizarin!120, dashed, thick, minimum height=1mm, minimum width=7mm, inner sep=0, outer sep=0, fit={(un_edge)}, rotate=-15] (un) {};
+     
+     \node[rectangle, fill=alizarin!62, dashed, thick, left of=o, node distance=4.25cm, yshift=0.3cm, inner sep=4, outer sep=1, rounded corners=2] (query) {Unlearning};
+     \draw[FARROW, draw=alizarin!120, dashed] (query.north) to [bend left=30] (un.south);
+     
+     \node [model, fill=alizarin!62, draw=alizarin!120, left of=m1, node distance=1.2cm] (un_m1) {$M_{1}'$};
+     
+     \draw[FARROW, draw=alizarin!120, dashed]  ($(s1.north)+(-0.2, 0)$) to [bend left] node [pos=0.3, yshift=2mm] {\small $S_{1}'$} (un_m1.south)  ;
+     \draw[FARROW, draw=alizarin!120, dashed]  (un_m1.north) to [bend left] (agg.west)  {} ;
+    
+    \end{tikzpicture}
+    }
+    \caption{split for unlearning}
+\end{figure}
+
+\end{document}

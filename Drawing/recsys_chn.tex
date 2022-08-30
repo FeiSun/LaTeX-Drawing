@@ -1,0 +1,215 @@
+% !TEX program = xelatex
+
+\documentclass[nonacm]{acmart}
+
+\usepackage{ctex}
+%
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{bm}
+%\usepackage{scalerel}
+
+\usepackage{tikz}
+\usepackage{tikzpeople}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning, fit, mindmap, trees, calc,tikzmark,shapes}
+\usetikzlibrary{shapes.arrows, fadings, automata,tikzmark,decorations.pathreplacing,patterns}
+
+\input{color}
+
+\makeatletter
+\let\ACM@origbaselinestretch\baselinestretch
+\makeatother
+
+
+\begin{document}
+
+
+\tikzset{
+FARROW/.style={arrows={-{Latex[length=1.25mm, width=1.mm]}}, thick},
+results/.style = {rectangle, minimum width=1.5em, minimum height=1.5em, inner sep=0, outer sep=0},
+}
+
+
+\resizebox{0.9\textwidth}{!}{
+  \centering
+  \begin{tikzpicture}
+    % \uncover<1-> {
+    \node[] (o) at (0, 0) {};
+
+    \node [trapezium, draw=deep_carmine_pink, semithick, fill=sundown, trapezium angle=65, minimum width=42mm, align=center, left of=o, node distance=1.4cm, rotate=-90, inner ysep=6pt] (matching) {匹配/召回};
+
+    \node [trapezium, draw=matisse, semithick, fill=french_pass, trapezium angle=65, minimum width=27mm, inner ysep=4pt, align=center, right of=o, node distance=1.4cm, rotate=-90] (ranking) {排序};
+
+    \node [align=center, right of=ranking, node distance=0.9cm] (rc) {$\cdots$};
+
+    \node [trapezium, draw=matisse, semithick, fill=french_pass,trapezium angle=63, minimum width=5mm, minimum height=3mm, inner ysep=6pt, align=center, right of=rc, node distance=0.8cm, rotate=-90] (rankern) {重排序};
+
+    \node [rectangle, draw=deep_carmine_pink, semithick, fill=sundown, minimum width=15mm, minimum height=8mm, inner ysep=2pt, align=center, below of=matching, node distance=2.7cm] (other_matching) {其他召回结果};
+
+    \node [rectangle, draw=fern, semithick, fill=hint_green, minimum width=15mm, minimum height=8mm, inner ysep=2pt, align=center, right of=other_matching, node distance=4cm] (feature) {其他特征};
+
+    \draw[thick,dotted]
+    ($(ranking.north west)+(-1.2, 1.1)$) -- ++(2.9,-0.6) -- ++(0,-2.1)  -- ++(-2.9,-0.6) -- cycle;
+
+    \node [cloud, cloud puffs=12.8, cloud ignores aspect, draw=fern, semithick, fill=hint_green, minimum width=25mm, align=center, inner ysep=4.5pt, above of=o, node distance=2.8cm, xshift=0.6cm] (behavior_his) {用户行为历史}; %todo: 搞多行
+
+    \node [cylinder, draw=saffron, semithick, cylinder body fill=double_pearl_lusta, cylinder end fill=double_pearl_lusta!42, cylinder uses custom fill, minimum width=16mm, shape aspect=.27, shape border rotate=90, align=center, inner ysep=6pt, left of=matching, node distance=3cm] (cand) {候选集};
+
+
+    \foreach \i in {-7.4, -2.4, 2.6, 12.6} {
+        \begin{scope}[scale=0.2, shift={($(rankern.east)+(8.2,\i)$)}]
+          \draw[bottom color=athens_gray, top color=white]
+          (0,0) -- ++(3,0) -- ++(0,3)  -- ++(-1,1) -- ++(-2,0) -- cycle;
+          \draw (3,3) -| (2,4);
+
+          \foreach \x in {1,2,3,4,5} {
+              \draw (0.5,0.5*\x) -- ++(2,0);
+            }
+          \draw (0.5,3) -- ++(1.2,0);
+
+        \end{scope}
+      }
+
+    \begin{scope}[scale=0.2, shift={($(rankern.east)+(8.2,7.6)$)}]
+      \draw[bottom color=athens_gray, top color=white, draw=flamingo]
+      (0,0) -- ++(3,0) -- ++(0,3)  -- ++(-1,1) -- ++(-2,0) -- cycle;
+      \draw[draw=flamingo] (3,3) -| (2,4);
+
+      \foreach \x in {1,2,3,4,5} {
+          \draw[draw=flamingo] (0.5,0.5*\x) -- ++(2,0);
+        }
+      \draw[draw=flamingo] (0.5,3) -- ++(1.2,0);
+
+    \end{scope}
+
+
+
+    \draw[FARROW] ($(behavior_his.south west)$) -> ($(matching.west)$); %++(-0.4, -0.5) 
+    \draw[FARROW] ($(behavior_his.south east)$) -- ++(0.8, -1) ;
+    \draw[FARROW] ($(other_matching.east)$) -- ++(0.5, 0) -- ++(0, 2.5) -> ($(ranking.south)+(0, -0.2)$);
+
+    \draw[FARROW] (matching) -> (ranking) node[midway, above] {\scriptsize $10^2 \sim 10^4$} ;
+    \draw[FARROW] (cand.east) -> (matching) node[midway, above] {\scriptsize $10^6 \sim 10^{10}$};
+
+    \draw[FARROW] ($(rankern.north)$) -- ++(1.2, 0) node[midway, above] {\scriptsize $\sim 10^1$} ;
+    \draw[FARROW] (feature.north) -- ++(0.0, 1);
+
+    \node[alice, mirrored, skin=brown, minimum size=1cm, right of=rankern, node distance=4cm] (user) {};
+
+    \draw[FARROW, dashed] (user.west) -> ++(-1.2, 1) node[midway, above, sloped] {\scriptsize 点击/观看};
+    %}
+
+  
+
+  \end{tikzpicture}}
+
+
+
+\centering
+\resizebox{0.9\textwidth}{!}{
+  \begin{tikzpicture}
+    % \uncover<1-> {
+    \node[] (o) at (0, 0) {};
+
+    \node [trapezium, draw=deep_carmine_pink, semithick, fill=sundown, trapezium angle=65, minimum width=42mm, align=center, left of=o, node distance=1.4cm, rotate=-90, inner ysep=6pt] (matching) {匹配/召回};
+
+    \node [trapezium, draw=matisse, semithick, fill=french_pass, trapezium angle=65, minimum width=27mm, inner ysep=4pt, align=center, right of=o, node distance=1.4cm, rotate=-90] (ranking) {排序};
+
+    \node [align=center, right of=ranking, node distance=0.9cm] (rc) {$\cdots$};
+
+    \node [trapezium, draw=matisse, semithick, fill=french_pass,trapezium angle=63, minimum width=5mm, minimum height=3mm, inner ysep=6pt, align=center, right of=rc, node distance=0.8cm, rotate=-90] (rankern) {重排序};
+
+    \node [rectangle, draw=deep_carmine_pink, semithick, fill=sundown, minimum width=15mm, minimum height=8mm, inner ysep=2pt, align=center, below of=matching, node distance=2.7cm] (other_matching) {其他召回结果};
+
+    \node [rectangle, draw=fern, semithick, fill=hint_green, minimum width=15mm, minimum height=8mm, inner ysep=2pt, align=center, right of=other_matching, node distance=4cm] (feature) {其他特征};
+
+    \draw[thick,dotted]
+    ($(ranking.north west)+(-1.2, 1.1)$) -- ++(2.9,-0.6) -- ++(0,-2.1)  -- ++(-2.9,-0.6) -- cycle;
+
+    \node [cloud, cloud puffs=12.8, cloud ignores aspect, draw=fern, semithick, fill=hint_green, minimum width=25mm, align=center, inner ysep=4.5pt, above of=o, node distance=2.8cm, xshift=0.6cm] (behavior_his) {用户行为历史}; %todo: 搞多行
+
+    \node [cylinder, draw=saffron, semithick, cylinder body fill=double_pearl_lusta, cylinder end fill=double_pearl_lusta!42, cylinder uses custom fill, minimum width=16mm, shape aspect=.27, shape border rotate=90, align=center, inner ysep=6pt, left of=matching, node distance=3cm] (cand) {候选集};
+
+
+    \foreach \i in {-7.4, -2.4, 2.6, 12.6} {
+        \begin{scope}[scale=0.2, shift={($(rankern.east)+(8.2,\i)$)}]
+          \draw[bottom color=athens_gray, top color=white]
+          (0,0) -- ++(3,0) -- ++(0,3)  -- ++(-1,1) -- ++(-2,0) -- cycle;
+          \draw (3,3) -| (2,4);
+
+          \foreach \x in {1,2,3,4,5} {
+              \draw (0.5,0.5*\x) -- ++(2,0);
+            }
+          \draw (0.5,3) -- ++(1.2,0);
+
+        \end{scope}
+      }
+
+    \begin{scope}[scale=0.2, shift={($(rankern.east)+(8.2,7.6)$)}]
+      \draw[bottom color=athens_gray, top color=white, draw=flamingo]
+      (0,0) -- ++(3,0) -- ++(0,3)  -- ++(-1,1) -- ++(-2,0) -- cycle;
+      \draw[draw=flamingo] (3,3) -| (2,4);
+
+      \foreach \x in {1,2,3,4,5} {
+          \draw[draw=flamingo] (0.5,0.5*\x) -- ++(2,0);
+        }
+      \draw[draw=flamingo] (0.5,3) -- ++(1.2,0);
+
+    \end{scope}
+
+
+    \draw[FARROW] ($(behavior_his.south west)$) -> ($(matching.west)$); %++(-0.4, -0.5) 
+    \draw[FARROW] ($(behavior_his.south east)$) -- ++(0.8, -1) ;
+    \draw[FARROW] ($(other_matching.east)$) -- ++(0.5, 0) -- ++(0, 2.5) -> ($(ranking.south)+(0, -0.2)$);
+
+    \draw[FARROW] (matching) -> (ranking) node[midway, above] {\scriptsize $10^2 \sim 10^4$} ;
+    \draw[FARROW] (cand.east) -> (matching) node[midway, above] {\scriptsize $10^6 \sim 10^{10}$};
+
+    \draw[FARROW] ($(rankern.north)$) -- ++(1.2, 0) node[midway, above] {\scriptsize $\sim 10^1$} ;
+    \draw[FARROW] (feature.north) -- ++(0.0, 1);
+
+    \node[alice, mirrored, skin=brown, minimum size=1cm, right of=rankern, node distance=4cm] (user) {};
+
+    \draw[FARROW, dashed] (user.west) -> ++(-1.2, 1) node[midway, above, sloped] {\scriptsize 点击/观看};
+    %}
+
+
+    %%%%%% research outline
+
+    %% matching
+    %\uncover<2-> {
+    % \draw[thick, draw=flamingo, decoration={random steps, segment length=5pt, amplitude=0.3pt}, decorate, rounded corners=2pt]
+    %    ($(matching.south west)+(-0.5, -2.85)$) -- ++(0.9, 0.05) -- ++(1.4, 0.6) -- ++(0.2, 3) -- ++(1, 0.5) -- ++(1, 0.5) ;
+    %     -- ++(0,-2.1)  -- ++(-2.9,-0.6) -- cycle;
+
+    \begin{scope}[on background layer]
+      \draw [flamingo, thick, fill=flamingo!20] plot [smooth cycle] coordinates { ($(cand.south west)+(-0.4, -0.2)$) ($(cand.south west)+(1.8, -1.3)$) ($(matching.south west)+(-0.4, -2.7)$) ($(matching.south west)+(0.9, -2.8)$)  ($(matching.south west)+(1.8, -2.2)$) ($(matching.north)+(0.6, 0)$) ($(behavior_his.south)+(0, -0.4)$)  ($(behavior_his.south east)+(0.5, -0.1)$) ($(behavior_his.east)+(0.2, 0)$) ($(behavior_his.north east)+(0.5, 0.5)$) ($(behavior_his.north west)+(-1, 0.3)$) ($(matching.south west)+(-0.5, 1)$) ($(matching.south west)+(-1, 0.4)$)  ($(cand.north west)+(-0.3, 0.2)$)};
+    \end{scope}
+
+
+
+    %\uncover<3-> {
+
+    \begin{scope}[on background layer]
+      %\begin{pgfonlayer}{background}
+      \draw [matisse, thick, fill=french_pass, fill opacity=0.5] plot [smooth cycle] coordinates { ($(behavior_his.north west)+(-1, 0.4)$) ($(behavior_his.north east)+(1.5, 0.6)$) ($(feature.south east)+(0.2, -0.2)$) ($(feature.south west)+(-0.4, -0.2)$) ($(feature.south west)+(-1.1, 1.8)$) ($(feature.south west)+(-1.4, 3.2)$)  };
+    \end{scope}
+
+
+    %\end{pgfonlayer}
+
+    %}
+
+    %\uncover<4-> {
+    \begin{scope}[on background layer]
+      \draw [fern, thick, fill=hint_green!50] plot [smooth cycle] coordinates {   ($(rankern.east)+(1.45, 3.4)$)   ($(rankern.east)+(1.45, -1.6)$)  ($(rankern.east)+(2.4, -1.6)$)  ($(rankern.east)+(2.4, 3.4)$) };
+    \end{scope}
+
+
+
+  \end{tikzpicture}}
+
+
+\end{document}
