@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{color}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+
+\input{color.tex}
+
+
+\pgfplotsset{
+axis background/.style={fill=gallery},
+grid=both,
+  xtick pos=left,
+  ytick pos=left,
+  tick style={
+    major grid style={style=white,line width=1pt},
+    minor grid style=gallery,
+    draw=none,
+  },
+  minor tick num=1,
+}
+
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{axis}[
+    xbar,
+    xmode=log,
+    ymajorgrids,
+    y axis line style={opacity=0},
+    bar width=0.4cm,
+    xmin=10,
+    xmax=100000,
+    xlabel={test},
+    ylabel={test},
+    % y label style={at={(-0.2,0.5)}},
+    % ylabel shift=0.1cm, % Shift ylabel to the left
+    ytick={1,2,3,4,5},
+    yticklabels={
+        {\includegraphics[width=1cm]{cas.pdf}},
+        {\includegraphics[width=1cm]{cas.pdf}},
+        {\includegraphics[width=1cm]{cas.pdf}},
+        {\includegraphics[width=1cm]{cas.pdf}},
+        {\includegraphics[width=1cm]{cas.pdf}},
+    },
+    % nodes near coords,
+    % nodes near coords align={horizontal},
+]
+\addplot[draw=none, fill=shakespeare, nodes near coords, every node near coord/.append style={anchor=east, text=white, font=\scriptsize}, point meta=explicit symbolic] coordinates {
+    (10,1)
+    (83.77,2) [83.77]
+    (791.12,3) [791.12]
+    (7391,4) [7391]
+    (26745.66,5) [26745.66]
+};
+
+
+
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

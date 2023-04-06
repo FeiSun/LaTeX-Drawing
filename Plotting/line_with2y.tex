@@ -1,0 +1,175 @@
+\documentclass{article}
+\usepackage{pgfplots}
+\usepackage{subcaption}
+
+\input{color}
+\pgfplotsset{compat=1.18}
+
+\pgfplotsset{
+set layers,
+axis background/.style={fill=gallery},
+grid=both,
+  tick style={
+    major grid style={style=white,line width=1pt},
+    minor grid style=gallery,
+    draw=none
+    },
+  minor tick num=1,
+    ymajorgrids,
+    major grid style={draw=white},
+    y axis line style={opacity=0},
+    tickwidth=0pt,
+}
+
+\begin{document}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \resizebox{\textwidth}{!}{
+        \begin{tikzpicture}
+            \begin{axis}[
+                scale only axis,
+                % axis y line*=left,
+                xlabel={Adversarial camouflage loss weight $\alpha$},
+                ylabel={Average misclassification rate (\%)},
+                ylabel style={matisse},
+                yticklabel style={matisse},
+                ymin=36, ymax=52,
+                ytick distance=2,
+                xtick={1,2,3,4},
+                xticklabels={0.1,0.5,1.0,5.0},
+                legend style={
+                      % fill=gallery,
+                      draw=none,
+                      % draw opacity=0,
+                      at={(0.3, 1.1)},
+                      anchor=north
+                      },
+            ]
+            
+            \addplot[
+                thick,
+                color=matisse,
+                mark=*,
+                ]
+                coordinates {
+                (1,49.28)
+                (2,50.92)
+                (3,47.81)
+                (4,36.38)
+                };
+                \addlegendentry{Misclassification rate}
+                
+            \end{axis}
+            \begin{axis}[
+            scale only axis,
+            axis y line*=right, 
+            axis x line=none,
+            ylabel={GraphFD},
+            ylabel style={flamingo},
+            yticklabel style={flamingo},
+            ymin=50, ymax=250,
+            ytick distance=25,
+            legend style={
+                % fill=gallery,
+                draw=none,
+                at={(0.75, 1.1)},
+                anchor=north
+            },
+             ]
+            \addplot[thick,
+                color=flamingo,
+                mark=square,
+                ]
+                coordinates {
+                    (1,230.11)
+                    (2,99.69)
+                    (3,76.36)
+                    (4,64.41)
+                };
+                \addlegendentry{GraphFD}
+                
+            \end{axis}
+            \end{tikzpicture}}
+            \label{subfig:case_clean}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \resizebox{\textwidth}{!}{
+        \begin{tikzpicture}
+            \begin{axis}[
+                scale only axis,
+                % axis y line*=left,
+                xlabel={Diversity sensitive loss weight  $\beta$},
+                ylabel={Average misclassification rate (\%)},
+                ylabel style={matisse},
+                yticklabel style={matisse},
+                ymin=36, ymax=52,
+                ytick distance=2,
+                xtick={1,2,3,4},
+                xticklabels={0.001,0.01,0.1,1},
+                legend style={
+                      % fill=gallery,
+                      draw=none,
+                      % draw opacity=0,
+                      at={(0.3, 1.1)},
+                      anchor=north
+                      },
+            ]
+            \addplot[
+                thick,
+                color=matisse,
+                mark=*,
+                ]
+                coordinates {
+                (1,48.57)
+                (2,50.92)
+                (3,46.16)
+                (4,48.40)
+                };
+                \addlegendentry{Misclassification rate}
+                
+            \end{axis}
+            \begin{axis}[
+            scale only axis,
+            axis y line*=right, 
+            axis x line=none,
+            ylabel={GraphFD},
+            ylabel style={flamingo},
+            yticklabel style={flamingo},
+            ymin=80, ymax=160,
+            ytick distance=10,
+            legend style={
+                % fill=gallery,
+                draw=none,
+                at={(0.75, 1.1)},
+                anchor=north
+            },
+             ]
+            \addplot[thick,
+                color=flamingo,
+                mark=square,
+                ]
+                coordinates {
+                    (1,85)
+                    (2,99.7)
+                    (3,101.5)
+                    (4,101.73)
+                };
+                \addlegendentry{GraphFD}
+                
+            \end{axis}
+            \end{tikzpicture}}
+        \label{subfig:case_gnia}
+    \end{subfigure}
+    \caption{test}
+    \label{fig:para}
+\end{figure}
+
+
+
+
+
+\end{document}
+
