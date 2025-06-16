@@ -1,0 +1,696 @@
+\tikzset{
+FARROW/.style={arrows={-{Latex[length=0.8mm, width=0.64mm]}}, rounded corners=0.6},
+d_FARROW/.style={arrows={{Latex[length=0.8mm, width=0.64mm]}-{Latex[length=0.8mm, width=0.64mm]}}},
+arrow1/.style={arrows={-{Latex[length=0.5mm, width=.4mm]}}, line width=0.4pt},
+DFARROW/.style={arrows={{Latex[length=1.25mm, width=1.mm]}-{Latex[length=1.25mm, width=1.mm]}}},
+hid_state/.style = {circle, fill=puerto_rico, minimum width=0.7em, align=center, inner sep=0, outer sep=0, font=\scriptsize},
+pos_emb/.style = {circle, fill=flamingo!72, minimum width=1.8em, align=center, inner sep=0, outer sep=0, font=\scriptsize},
+mha/.style = {rectangle, fill=sunset_orange, minimum width=0.7em, minimum height=0.7em, align=center, inner sep=0, outer sep=0, font=\scriptsize},
+llm/.style = {rectangle, fill=none, draw, minimum width=11.5em, minimum height=6em, align=center, rounded corners=3}, %fill=Madang!82,
+mlp/.style = {diamond,
+    %    regular polygon sides=4,
+    inner sep=0, outer sep=0,
+    minimum width=0.8em,
+    minimum height=0.8em, fill=sushi, align=center},
+project/.style = {rectangle, fill=hint_green, minimum width=3.6em, minimum height=1.1em, inner sep=1pt, outer sep=1pt, align=center, rounded corners=1.5, font=\small},
+text_node/.style = { inner sep=2pt, outer sep=0pt, font=\fontsize{7.2pt}{9pt}\selectfont},
+}
+
+\tikzset{
+  pics/self_att/.style={
+      code={
+          \node[hid_state] (-hs) at (0,0)  {};
+          \node[mha, above=0.1em of -hs, xshift=0.7em] (-mha) {};
+          \node[mlp, above=0.5em of -mha] (-mlp) {};
+          %      \node[hid_state, above=3em of -hs] (-hs-up) {};
+
+          \draw [FARROW, puerto_rico, thick] ($(-hs.north)+(0, .11em)$) to ($(-hs.north)+(0, 2.6em)$);
+          \draw [arrow1, sunset_orange] ($(-mha.north)+(0, .01em)$) |- ++(-0.65em, 0.16em);
+          \draw [arrow1, sushi] ($(-mha.north)+(-0.65em, 0.28em)$) -| ($(-mlp.south)+(0, -.01em)$);
+          \draw [arrow1, sushi] ($(-mlp.north)+(0, .02em)$) |- ++(-0.65em, 0.14em);
+          \draw [arrow1, sunset_orange] ($(-hs.east)+(0.01em, 0)$) -| ($(-mha.south)+(0, -.01em)$);
+          \draw[sunset_orange, line width=0.5pt] (-hs) + (180:0.42em) arc (180:0:0.42em);
+        }
+    }
+}
+
+
+\tikzset{
+  pics/my_dot/.style args={[#1]}{
+    code={
+      \tikzset{dot_color/.style={draw=#1}}
+      \node[circle, minimum size=0.1em, align=center, inner sep=0, outer sep=0, draw, dot_color] (o1) at (0, 0) {};
+      \node[circle, minimum size=0.1em, align=center, inner sep=0, outer sep=0, draw, dot_color] (o2) at ($(o1.north) + (0, .2em)$) {};
+      \node[circle, minimum size=0.1em, align=center, inner sep=0, outer sep=0, draw, dot_color] (o3) at ($(o1.north) + (0, .4em)$) {};
+    }
+  },
+  % 设置默认颜色参数
+  pics/my_dot/.default=[puerto_rico]
+}
+
+
+\tikzset{
+  pics/my_cdot/.style args={[#1]}{
+    code={
+      \tikzset{dot_color/.style={fill=#1}}
+      \node[circle, minimum size=0.12em, inner sep=0, outer sep=0, dot_color] (o1) at (0, 0) {};
+      \node[circle, minimum size=0.12em, inner sep=0, outer sep=0, dot_color] at ($(o1.center) + (.2em, 0)$) {};
+      \node[circle, minimum size=0.12em, inner sep=0, outer sep=0, dot_color] at ($(o1.center) + (.4em, 0)$) {};
+    }
+  },
+  % 设置默认颜色参数
+  pics/my_cdot/.default=[sunset_orange]
+}
+
+
+
+\begin{figure*}
+% \centering
+\begin{subfigure}[b]{0.48\textwidth}
+%\resizebox{\linewidth}{!}{
+  \begin{tikzpicture}
+
+    \begin{scope}[opacity=0.15]
+      \pic[name=sa10, local bounding box=sa10] at (0, 0) {self_att};
+      \pic[name=sa11, local bounding box=sa11] at ($(sa10-hs) + (2.2em,0)$) {self_att};
+      \pic[name=sa12, local bounding box=sa12] at ($(sa11-hs) + (2.8em,0)$) {self_att};
+      
+    \end{scope}
+
+    \node[text_node,
+      draw,
+      rounded corners=1.5,
+      anchor=north west,
+      text width=6em,
+    ]
+    (ip2) at ($(sa10-hs) + (-0.6em, -1.3em)$) {\hspace*{0.03em} Who wrote the song \hspace*{0.1em}~``\textit{If I Were a Boy}'' ?};
+    \node[text_node]
+    (input_label) at ($(ip2.north) + (0, -2.4em)$) {\textcolor{flamingo}{\ding{202}} \bf context-free input};
+
+    \node[text_node,
+      anchor=north west]
+    (de0) at ($(ip2.north east) + (1em,0)$) {\texttt{<BOS>}};
+    \node[text_node,
+      anchor=north west]
+    (de1) at ($(de0.north east) + (0.15em,0)$) {BC};
+    \node[text_node,
+      anchor=north west]
+    (de2) at ($(de1.north east) + (0.15em,0)$) {Jean};
+    \node[text_node,
+      anchor=north west]
+    (de3) at ($(de2.north east) + (0.15em,0)$) {and};
+    \node[text_node,
+      anchor=north west]
+    (de4) at ($(de3.north east) + (0.15em,0)$) {Toby};
+    
+    \draw [semithick, decorate, decoration={brace, amplitude=5pt, mirror}] ([yshift=-0.6em, xshift=-0.4em] de1.south west) -- ([yshift=-0.6em, xshift=6.2em] de1.south west) node[text_node, midway,yshift=-0.95em] (tf) {\textcolor{flamingo}{\ding{203}} \bf teacher forcing};
+    
+    \foreach \x in {0,1,2}
+    {
+    \draw [FARROW, puerto_rico, thick] ($(sa1\x-hs.south)+(0, -0.92em)$) to ++(0, 0.9em);
+    }
+    
+
+    \begin{scope}[opacity=0.3]
+      \foreach \x/\y in {0/5, 1/6, 2/7, 3/8, 4/9}
+        {
+          \pic[name=sa1\y, local bounding box=sa1\y] at ($(de\x |- sa10-hs)$){self_att};
+          \pic[name=vdot\y, local bounding box=vdot\y] at ($(sa1\y-hs.north) + (0, 2.7em)$) {my_dot};
+        }
+
+      \foreach \x/\y in {5/6, 6/7, 7/8, 8/9}
+        {
+          \draw [arrow1, sunset_orange] ($(sa1\x-hs.east)+(0.04em, 0)$) -- ($(sa1\y-hs.west)+(-0.08em, 0)$);
+        }
+       
+        \foreach \x in {5,6,7,8,9}
+      {
+        \node[hid_state] (sa3\x-hs) at ($(sa1\x-hs) + (0, 4.4em)$) {};
+        \draw [FARROW, puerto_rico, thick] ($(vdot\x.north)+(0, 0.06em)$) to ($(sa3\x-hs.south)+(0, -0.04em)$);
+      }
+       
+    \end{scope}
+    
+    \foreach \x in {5,...,9}
+    {
+    \draw [FARROW, puerto_rico, thick] ($(sa1\x-hs.south)+(0, -1.1em)$) to ++(0, 1.08em);
+    }
+
+    % 纵向
+    \begin{scope}[opacity=0.15]
+      % 横着一排
+      
+      \foreach \x in {0,1,2}
+      {
+        \node[hid_state] (sa3\x-hs) at ($(sa1\x-hs) + (0, 4.4em)$) {};
+      }
+
+      % line & arrow
+      \foreach \x in {1}
+        {
+          \draw [arrow1, sunset_orange] ($(sa\x0-hs.east)+(0.04em, 0)$) -- ($(sa\x1-hs.west)+(-0.08em, 0)$);
+          \pic[name=cdot\x, local bounding box=cdot\x] at ($(sa\x1-hs.east)!0.52!(sa\x2-hs.west)$) {my_cdot=[puerto_rico]};
+          \draw [arrow1, sunset_orange] ($(sa\x1-hs.east)+(0.04em, 0)$) -- ($(cdot\x.west)+(-0.04em, 0) $); %dotted, dash pattern=on 1pt off 0.8pt
+          \draw [arrow1, sunset_orange] ($(cdot\x.east)+(0.08em, 0)$) -- ($(sa\x2-hs.west) +(-0.08em, 0) $); %, dotted, dash pattern=on 1pt off 0.8pt
+        }
+
+      \pic[name=cdot1-1, local bounding box=cdot1-1] at ($(cdot1o1 |- sa11-mha)$) {my_cdot};
+      \pic[name=cdot1-2, local bounding box=cdot1-2] at ($(cdot1o1 |- sa11-mlp)$) {my_cdot=[sushi]};
+
+
+      \foreach \x in {0,1,2}
+        {
+          \pic[name=vdot\x, local bounding box=vdot\x] at ($(sa1\x-hs.north) + (0, 2.7em)$) {my_dot};
+          \draw [FARROW, puerto_rico, thick] ($(vdot\x.north)+(0, 0.06em)$) to ($(sa3\x-hs.south)+(0, -0.04em)$);
+        }
+        
+     \pic[name=cdot_io_0, local bounding box=cdot_io_0] at ($(sa12-hs.east)!0.5!(sa15-hs.west)$) {my_cdot=[puerto_rico]};
+    \foreach \x/\y in {1/sa12-mha}
+      {
+        \pic[name=cdot_io_\x, local bounding box=cdot_io_\x] at ($(cdot_io_0o1 |- \y)$) {my_cdot};
+      }
+      
+%      \pic[name=cdot_io_4, local bounding box=cdot_io_4] at ($(cdot_io_0o1 |- sa22-hs.west)$) {my_cdot=[puerto_rico]};
+      
+     \foreach \x/\y in {2/sa12-mlp}
+      {
+        \pic[name=cdot_io_\x, local bounding box=cdot_io_\x] at ($(cdot_io_0o1 |- \y)$) {my_cdot=[sushi]};
+      }
+      
+      \pic[name=cdot_io_30, local bounding box=cdot_io_30] at ($(cdot1o1 |- sa30-hs)$) {my_cdot=[puerto_rico]};
+      
+      \pic[name=cdot_io_31, local bounding box=cdot_io_31] at ($(cdot_io_0o1 |- sa30-hs)$) {my_cdot=[puerto_rico]};
+    
+    \draw [arrow1, sunset_orange] ($(sa12-hs.east)+(0.04em, 0)$) -- ($(cdot_io_0.west)+(-0.04em, 0) $);
+
+    \end{scope}
+    
+    % 画省略号
+    
+	\begin{scope}[opacity=0.3]
+     \draw [arrow1, sunset_orange] ($(cdot_io_0.east)+(0.08em, 0)$) -- ($(sa15-hs.west) +(-0.08em, 0) $);
+
+	\end{scope}
+    
+    \node[text_node,
+      anchor=base,
+      text depth=.15em,
+      xshift=-0.3em,
+      ]
+    (de_out1) at ($(sa15-hs.north) + (0, 5.5em)$) {Beyonc\'e};
+    
+    \node[text_node,
+      anchor=base, 
+      text depth=.15em,
+      ]
+    (de_out2) at ($(sa16-hs.north |- de_out1.base)$) {Jean};
+    
+    \node[text_node,
+  anchor=base, 
+      text depth=.15em,
+  ]
+(de_out3) at ($(sa17-hs.north |- de_out1.base)$) {is};
+
+    \node[text_node,
+  anchor=base, 
+      text depth=.15em,
+  ]
+(de_out4) at ($(sa18-hs.north |- de_out1.base)$) {Toby};
+    \node[text_node,
+  anchor=base, 
+      text depth=.15em,
+  ]
+(de_out5) at ($(sa19-hs.north |- de_out1.base)$) {Gad};
+
+
+    \node[text_node,
+       anchor=base, 
+      text depth=.15em,
+      ]
+    (gt5) at ($(sa15-hs.north) + (0, 7.7em)$) {BC};
+
+    \foreach \x/\y in {6/Jean, 7/and, 8/Toby, 9/Gad}
+    {
+    \node[text_node,
+%      anchor=north,
+      anchor=base, 
+      text depth=.15em,
+      ]
+    (gt\x) at ($(sa1\x-hs.south |- gt5.base)$) {\y};
+    }
+    
+    \node[text_node,
+      anchor=base east,
+      align=right,
+      text depth=.15em,
+      text width=2em,
+      color=tuatara,
+      font=\fontsize{4pt}{5pt}\selectfont \linespread{0.4}\selectfont
+      ]
+    (gt) at ($(de_out1.west) + (0, 2.65em) $) {\bf Ground Truth:};
+    
+    \node[text_node,
+      anchor=base east,
+      text depth=.15em,
+      color=tuatara,
+      font=\fontsize{4pt}{5pt}\selectfont
+      ]
+    (op_label) at ($(de_out1.west) + (0.05em, 0.15em) $) {\bf Output:};
+
+	% 首先需要在 tikzpicture 环境开始时启用 backgrounds 库
+	\begin{scope}[on background layer]
+	    \node[%fill=athens_gray!42, 
+	          draw=tuatara!42, thin,
+	          rounded corners=1pt,
+	          fit={(gt5) (gt9) ($(gt5.west) + (-1em,0.02em)$)  ($(gt9.east) + (0.3em, 0.55em)$)},
+	          inner sep=-0.5pt,
+	    ] (gt_box) {};
+	    \node[%fill=athens_gray!42, 
+	          draw=tuatara!42, thin,
+	          rounded corners=1pt,
+	          fit={(de_out1) (de_out5) ($(de_out5.east) + (.3em,0.55em)$)},
+	          inner sep=-0.5pt,
+	    ] (output_box) {};
+	\end{scope}
+	
+	
+	 \foreach \x/\y in {5, 6, 7, 8, 9}
+      {
+         \draw [FARROW, puerto_rico, thick] ($(sa3\x-hs.north)+(0, 0.04em)$) to ++(0, 1.05em) ;
+      }
+      
+      %%%% truncation 
+  
+      \node[regular polygon, regular polygon sides=8, draw=flamingo!200, fill=flamingo, text=white, minimum size=0.2em, inner sep=0pt, outer sep=0pt] (stop) at ($(gt9.east) + (1.3em, -10em) $) {\fontsize{4pt}{5pt}\selectfont\bf STOP};
+      
+      \draw [FARROW, flamingo, thick, dash pattern=on 1pt off 0.8pt] (gt_box.east) to ($(gt_box.east -| stop.north)$) to node[midway, sloped=true, color=black, font=\scriptsize, yshift=0.5em, xshift=0.1em] (stop_label) {\bf ground truth length} (stop.north) ;
+      \node[] at ($(stop_label.west) + (0, 0.06em)$) {\small \textcolor{flamingo}{\ding{204}}};
+      
+%      \draw [dashed, flamingo] ($(de_out5.east)+(0.1em, -0.7em)$) to ($(de_out5.east)+(0.1em, 2.8em)$) ;
+      
+      %%%% verify & tearcher forcing
+      
+      \foreach \x/\y/\z in {5/\ding{56}/flamingo, 6/\ding{52}/shakespeare, 7/\ding{56}/flamingo, 8/\ding{52}/shakespeare, 9/\ding{52}/shakespeare}
+      {
+         \draw [d_FARROW, dotted, dash pattern=on 0.6pt off 0.48pt] ($(gt\x.south)+(0, 0.32em)$) -- node[midway, sloped=false, color=\z, font=\scriptsize] (m\x) {\y}  ++(0, -1.82em) ;
+      }
+     
+     %%%% metric
+      \node[densely dotted,
+          draw=flamingo,
+          fit={(m5) (m9) },
+          inner sep=-2.5pt,
+	    ] (m_box) {};
+	 
+	 \draw [FARROW, red, densely dotted] ($(m_box.west)+(-0.1em, 0)$) to ++(-0.6em, 0);
+     \draw [FARROW, red, densely dotted] ($(m_box.west)+(-2.5em, 0)$) to ++(0.9em, 0);
+     
+     \node[text_node,
+      anchor=center,
+      align=center,
+      text=flamingo!62!red,
+    ]
+    (result) at ($(gt9.east) + (-8.8em, -1.1em)$) {3/5};
+
+     \draw [FARROW] ($(gt_box.west)+(0, 0)$) to ++(-3em, 0) to ++(0, -0.55em);
+     \draw [FARROW] ($(output_box.west)+(0, 0)$) to ++(-3em, 0) to ++(0, 0.55em);
+     \node[project,
+      anchor=center,
+      align=center,
+      font=\fontsize{7.2pt}{9pt}\selectfont
+    ]
+    (metric) at ($(gt.west) + (-0.7em, -1.6em)$) {match ratio};
+    \node[] at ($(metric.west) + (-0.2em, 0em)$) {\fontsize{7.2pt}{9pt}\selectfont \textcolor{flamingo}{\ding{205}}};
+
+    
+    % 计算水平方向的坐标（gt5.east 加上偏移量）
+    \begin{scope}[on background layer]
+    
+    \coordinate (target1) at ($(gt5.east)+(0, -10.9em)$);
+
+    \draw [FARROW, red] ($(gt5.east)+(-0.2em, 0)$) to ($(gt5.east)+(0.4em, 0)$) to ($(gt5.east)+(0.4em, -10.9em)$) to ($(target1 -| de1.south)$) to ($(de1.south)+(0, 0.2em)$) ;
+    \draw [FARROW, red
+    ] ($(gt6.east)+(-0.2em, 0)$) to ++ (0.3em, 0) to ++(0, -10.9em) to ($(target1 -| de2.south)$) to ($(de2.south)+(0, 0.2em)$);
+    \draw [FARROW, red
+    ] ($(gt7.east)+(-0.25em, 0)$) to ++ (0.45em, 0) to ++(0, -10.9em) to ($(target1 -| de3.south)$) to ($(de3.south)+(0, 0.2em)$);
+    
+    \draw [FARROW, red
+    ] ($(gt8.east)+(-0.2em, 0)$) to ++ (0.3em, 0) to ++(0, -10.9em) to ($(target1 -| de4.south)$) to ($(de4.south)+(0, 0.35em)$);
+    	
+    \end{scope}
+
+
+    \begin{scope}[on background layer]
+    \node[fill=gallery!42,
+%          draw,
+%          dashed,
+%          thick,
+          rounded corners=2pt,
+          fit={(sa10)(sa15)(sa16)(sa17)(sa18)(sa19)(sa30-hs)},
+          inner sep=3pt,
+          ] (dashedBox) {};
+          
+     \draw [dashed, flamingo] ($(cdot_io_0.north)+(-0.4em, -3.8em)$) to ($(cdot_io_31.north)+(-0.4em, 0.9em)$) ;
+     
+     \end{scope}
+    
+    \node[
+          draw,
+%          dashed,
+%          thick,
+          rounded corners=2pt,
+          fit={(sa10)(sa15)(sa16)(sa17)(sa18)(sa19)(sa30-hs)},
+          inner sep=3pt,
+          ] {};
+     \node[
+          rounded corners=2pt, opacity=0.8,
+          fit={(sa10)(sa15)(sa16)(sa17)(sa18)(sa19)(sa30-hs)},
+          inner sep=7pt,
+          align=center, text height=24pt, text depth=0.9em,
+          ]  {\fontsize{24}{30}\selectfont Edited $\,$ LLM};
+
+  \end{tikzpicture} %}
+  \caption{synthetic evaluation framework}
+  \label{fig:van_eval}
+\end{subfigure}
+\begin{subfigure}[b]{0.48\textwidth}
+%\resizebox{\linewidth}{!}{
+  \begin{tikzpicture}
+
+    \begin{scope}[opacity=0.15]
+      \pic[name=sa10, local bounding box=sa10] at (0, 0) {self_att};
+      \pic[name=sa11, local bounding box=sa11] at ($(sa10-hs) + (2.2em,0)$) {self_att};
+      \pic[name=sa12, local bounding box=sa12] at ($(sa11-hs) + (3em,0)$) {self_att};
+    \end{scope}
+
+    \node[text_node,
+      draw,
+      rounded corners=1.5,
+      anchor=north west,
+      text width=7.2em
+    ]
+    (ip2) at ($(sa10-hs) + (-0.6em, -1.3em)$) {\texttt{\{Context\}} Who wrote the song ``\textit{If I Were a Boy}'' ?};
+    
+    \begin{scope}[on background layer]
+    	\node[project,
+      rectangle, fill=flamingo!62, minimum width=3em, minimum height=0.78em, rounded corners=1,
+    ]
+    (c_bg) at ($(ip2.west) + (1.55em, 0.42em)$) {};
+    \end{scope}
+
+    
+    \node[text_node]
+    (input_label) at ($(ip2.north) + (0, -2.4em)$) {\textcolor{flamingo}{\ding{202}} \bf context-guided input};
+
+    \node[text_node,
+      anchor=north west]
+    (de0) at ($(ip2.north east) + (1em,0)$) {\texttt{<BOS>}};
+    \node[text_node,
+      anchor=north west]
+    (de1) at ($(de0.north east) + (0,0)$) {Beyonc\'e};
+    \node[text_node,
+      anchor=north west]
+    (de2) at ($(de1.north east) + (0.15em,0)$) {is};
+    \node[text_node,
+      anchor=north west]
+    (de3) at ($(de2.north east) + (0.8em,0)$) {the};
+    \node[text_node,
+      anchor=north west]
+    (de4) at ($(de3.north east) + (0.35em,0)$) {writer};
+    
+\draw [semithick, decorate, decoration={brace, amplitude=5pt, mirror}] ([yshift=-0.6em, xshift=-1.6em] de1.south west) -- ([yshift=-0.6em, xshift=7.5em] de1.south west) node[text_node, midway,yshift=-0.8em] (tf) {\textcolor{flamingo}{\ding{203}} \bf autoregressive decoding};
+    
+    \foreach \x in {0,1,2}
+    {
+    \draw [FARROW, puerto_rico, thick] ($(sa1\x-hs.south)+(0, -0.92em)$) to ++(0, 0.9em);
+    }
+    
+
+    \begin{scope}[opacity=0.3]
+      \foreach \x/\y in {0/5, 1/6, 2/7, 3/8, 4/9}
+        {
+          \pic[name=sa1\y, local bounding box=sa1\y] at ($(de\x |- sa10-hs)$){self_att};
+          \pic[name=vdot\y, local bounding box=vdot\y] at ($(sa1\y-hs.north) + (0, 2.7em)$) {my_dot};
+        }
+
+      \foreach \x/\y in {5/6, 6/7, 7/8, 8/9}
+        {
+          \draw [arrow1, sunset_orange] ($(sa1\x-hs.east)+(0.04em, 0)$) -- ($(sa1\y-hs.west)+(-0.08em, 0)$);
+        }
+        
+        \foreach \x in {5,6,7,8,9}
+      {
+        \node[hid_state] (sa3\x-hs) at ($(sa1\x-hs) + (0, 4.4em)$) {};
+        \draw [FARROW, puerto_rico, thick] ($(vdot\x.north)+(0, 0.06em)$) to ($(sa3\x-hs.south)+(0, -0.04em)$);
+      }
+       
+    \end{scope}
+    
+    \foreach \x in {5,...,9}
+    {
+    \draw [FARROW, puerto_rico, thick] ($(sa1\x-hs.south)+(0, -1.1em)$) to ++(0, 1.08em);
+    }
+
+    % 纵向
+    \begin{scope}[opacity=0.15]
+
+      \foreach \x in {0,1,2}
+      {
+        \node[hid_state] (sa3\x-hs) at ($(sa1\x-hs) + (0, 4.4em)$) {};
+        
+      }
+
+      % line & arrow
+      \foreach \x in {1}
+        {
+          \draw [arrow1, sunset_orange] ($(sa\x0-hs.east)+(0.04em, 0)$) -- ($(sa\x1-hs.west)+(-0.08em, 0)$);
+          \pic[name=cdot\x, local bounding box=cdot\x] at ($(sa\x1-hs.east)!0.52!(sa\x2-hs.west)$) {my_cdot};
+
+          \draw [arrow1, sunset_orange] ($(sa\x1-hs.east)+(0.04em, 0)$) -- ($(cdot\x.west)+(-0.04em, 0) $); %dotted, dash pattern=on 1pt off 0.8pt
+          \draw [arrow1, sunset_orange] ($(cdot\x.east)+(0.08em, 0)$) -- ($(sa\x2-hs.west) +(-0.08em, 0) $); %, dotted, dash pattern=on 1pt off 0.8pt
+        }
+
+      \pic[name=cdot1-1, local bounding box=cdot1-1] at ($(cdot1o1 |- sa11-mha)$) {my_cdot};
+      \pic[name=cdot1-2, local bounding box=cdot1-2] at ($(cdot1o1 |- sa11-mlp)$) {my_cdot=[sushi]};
+
+      \foreach \x in {0,1,2}
+        {
+          \pic[name=vdot\x, local bounding box=vdot\x] at ($(sa1\x-hs.north) + (0, 2.7em)$) {my_dot};
+          \draw [FARROW, puerto_rico, thick] ($(vdot\x.north)+(0, 0.06em)$) to ($(sa3\x-hs.south)+(0, -0.04em)$);
+        }
+
+    \pic[name=cdot_io_0, local bounding box=cdot_io_0] at ($(sa12-hs.east)!0.5!(sa15-hs.west)$) {my_cdot=[puerto_rico]};
+    \foreach \x/\y in {1/sa12-mha}
+      {
+        \pic[name=cdot_io_\x, local bounding box=cdot_io_\x] at ($(cdot_io_0o1 |- \y)$) {my_cdot};
+      }
+      
+      
+     \foreach \x/\y in {2/sa12-mlp}
+      {
+        \pic[name=cdot_io_\x, local bounding box=cdot_io_\x] at ($(cdot_io_0o1 |- \y)$) {my_cdot=[sushi]};
+      }
+      
+      \pic[name=cdot_io_30, local bounding box=cdot_io_30] at ($(cdot1o1 |- sa30-hs)$) {my_cdot=[puerto_rico]};
+      
+      \pic[name=cdot_io_31, local bounding box=cdot_io_31] at ($(cdot_io_0o1 |- sa30-hs)$) {my_cdot=[puerto_rico]};
+    
+    \draw [arrow1, sunset_orange] ($(sa12-hs.east)+(0.04em, 0)$) -- ($(cdot_io_0.west)+(-0.04em, 0) $);
+    \end{scope}
+    
+    % 画省略号
+    
+	\begin{scope}[opacity=0.3]
+     \draw [arrow1, sunset_orange] ($(cdot_io_0.east)+(0.08em, 0)$) -- ($(sa15-hs.west) +(-0.08em, 0) $);
+	\end{scope}
+    
+    
+    \node[text_node,
+      anchor=base,        % 关键1：锚点改为基线
+      text depth=.15em,
+      xshift=-0.3em,
+      ]
+    (de_out1) at ($(sa15-hs.north) + (0, 5.5em)$) {Beyonc\'e};
+    
+    \node[text_node,
+      anchor=base,        % 关键1：锚点改为基线
+      text depth=.15em,
+      ]
+    (de_out2) at ($(sa16-hs.north |- de_out1.base)$) {is};
+    
+    \node[text_node,
+  anchor=base,        % 关键1：锚点改为基线
+      text depth=.15em,
+  ]
+(de_out3) at ($(sa17-hs.north |- de_out1.base)$) {the};
+
+    \node[text_node,
+  anchor=base,        % 关键1：锚点改为基线
+      text depth=.15em,
+  ]
+(de_out4) at ($(sa18-hs.north |- de_out1.base)$) {writer};
+    \node[text_node,
+      anchor=base,        % 关键1：锚点改为基线
+      text depth=.15em,
+      font=\fontsize{4.4pt}{5pt}\selectfont,
+      xshift=0.4em,
+      opacity=0.5,
+  ]
+(de_out5) at ($(sa19-hs.north |- de_out1.base)$) {<|endoftext|>};
+\begin{scope}[on background layer]
+    	\node[project,
+      rectangle, fill=flamingo!60, minimum width=2.2em, minimum height=0.6em, rounded corners=1,
+    ]
+    (o_bg) at ($(de_out5) + (0, 0.05em)$) {};
+    \end{scope}
+
+
+    \node[text_node,
+       anchor=base,
+       text opacity=0,
+      text depth=.15em,
+      ]
+    (gt5) at ($(sa15-hs.north) + (0, 7.7em)$) {BC};
+     \node[text_node,
+       anchor=base,
+      text depth=.15em,
+      ]
+    (gt0) at ($(sa15-hs.north) + (1.6em, 7.7em)$) {BC Jean and Toby Gad};
+
+    \foreach \x/\y in {6/Jean, 7/and, 8/Toby, 9/Gad}
+    {
+    \node[text_node,
+       text opacity=0,
+      anchor=base,
+      text depth=.15em,
+      ]
+    (gt\x) at ($(sa1\x-hs.south |- gt5.base)$) {\y};
+    }
+    
+    \node[text_node,
+      anchor=base east,
+      align=right,
+      text depth=.15em,
+      text width=2em,
+      color=tuatara,
+      font=\fontsize{4pt}{5pt}\selectfont \linespread{0.4}\selectfont
+      ]
+    (gt) at ($(de_out1.west) + (-0.2em, 2.65em) $) {\bf Ground Truth:};
+    
+    \node[text_node,
+      anchor=base east,
+      text depth=.15em,
+      color=tuatara,
+      font=\fontsize{4pt}{5pt}\selectfont
+      ]
+    (op_label) at ($(de_out1.west) + (-0.15em, 0.15em) $) {\bf Output:};
+
+	% 首先需要在 tikzpicture 环境开始时启用 backgrounds 库
+	\begin{scope}[on background layer]
+	    \node[fill=athens_gray!42, 
+	          draw=tuatara!42, thin,
+	          rounded corners=1pt,
+	          fit={(gt0)  ($(gt0.west) + (-0.2em, 0)$)  ($(gt0.east) + (0.2em, 0.55em)$)},
+	          inner sep=-0.5pt,
+	    ] (gt_box) {};
+	    \node[fill=athens_gray!42, 
+	          draw=tuatara!42, thin,
+	          rounded corners=1pt,
+	          fit={(de_out1) (de_out4) ($(de_out1.west) + (-0.2em,0)$) ($(de_out4.east) + (0.2em,0)$)},
+	          inner sep=-0.5pt,
+	    ] (output_box) {};
+	\end{scope}
+	
+	
+	 \foreach \x/\y in {5, 6, 7, 8, 9}
+      {
+         \draw [FARROW, puerto_rico, thick] ($(sa3\x-hs.north)+(0, 0.04em)$) to ++(0, 1.05em) ;
+      }
+      
+       %%%% truncation 
+      
+%      \node[stop sign, draw] at ($(de_out5.west) + (1em, 0.2em) $) {STOP};
+     \node[regular polygon, regular polygon sides=8, draw=flamingo!200, fill=flamingo, text=white, minimum size=0.2em, inner sep=0pt, outer sep=0pt] (stop) at ($(gt9.east) + (1.25em, -10em) $) {\fontsize{4pt}{5pt}\selectfont\bf STOP};
+      
+     \coordinate (stp_p) at ($(de_out5.east)+ (0, 0.05em) $);
+      
+      \draw [FARROW, flamingo, thick, dash pattern=on 1pt off 0.8pt] ($(de_out5.east)+ (-0.1em, 0.05em) $) to ($(stp_p -| stop.north)$) to node[midway, sloped=true, color=black, font=\scriptsize, yshift=0.4em, xshift=-0.2em] (stop_label) {\bf  natural stopping criteria} (stop.north) ;
+      \node[text_node] at ($(stop_label.west) + (0, 0)$) { \textcolor{flamingo}{\ding{204}}};
+      
+      %%%% verify & tearcher forcing
+            
+     %%%% metric
+
+     \node[
+      anchor=center,
+      align=center,
+    ]
+    (metric) at ($(gt.west) + (-0.6em, -1.6em)$) {\textcolor{ship_gray}{\large \faIcon{robot}}};
+    \node[text width=2.3em, text depth=.1em]
+    (metric_label) at ($(metric.west) + (-0.7em, 0.3em)$) {\fontsize{6pt}{1pt}\selectfont  \bfseries LLM-as-};
+    \node[text width=2.3em, text depth=.1em, align=left, anchor=west]
+    (metric_label1) at ($(metric_label.west) + (0, -0.6em)$) {\fontsize{6pt}{1pt}\selectfont  \bfseries  a-Judge};
+    \node[text_node]
+    (metric_an) at ($(metric_label.west) + (0, -0.3em)$) {\textcolor{flamingo}{\ding{205}}};
+    \node[text_node,
+     text=flamingo!62!red,
+    ]
+    (result) at ($(metric.east) + (1em, 0)$) {0};
+
+     \draw [FARROW, red, densely dotted] ($(result.west)+(-0.9em, 0)$) to ++(1.1em, 0);
+    \draw [FARROW] ($(gt_box.west)+(0, 0)$) to ++(-3em, 0) to ++(0, -0.55em);
+     \draw [FARROW] ($(output_box.west)+(0, 0)$) to ++(-3em, 0) to ++(0, 0.55em);
+
+    \begin{scope}[on background layer]
+    
+    \coordinate (target1) at ($(de_out1.east)+(0, -8.7em)$);
+
+    \draw [FARROW, red] ($(de_out1.east)+(-0.2em, 0)$) to ($(de_out1.east)+(0, 0)$) to ++(0, -8.7em) to ($(target1 -| de1.south)$) to ($(de1.base)+(0, -0.1em)$) ;
+    \draw [FARROW, red] ($(de_out2.east)+(-0.2em, 0)$) to ++ (1.1em, 0) to ++(0, -8.7em) to ($(target1 -| de2.south)$) to ($(de2.base)+(0, -0.1em)$);
+    \draw [FARROW, red] ($(de_out3.east)+(-0.2em, 0)$) to ++ (0.35em, 0) to ++(0, -8.7em) to ($(target1 -| de3.south)$) to ($(de3.base)+(0, -0.1em)$);  
+    \draw [FARROW, red] ($(de_out4.east)+(-0.2em, 0)$) to ++ (0.2em, 0) to ++(0, -8.7em) to ($(target1 -| de4.south)$) to ($(de4.base)+(0, -0.1em)$);
+    	
+    \end{scope}
+
+	
+    %---------------------
+    % (Optional) Draw a dashed "fit" box around certain self_att blocks
+    %---------------------
+    \begin{scope}[on background layer]
+    \node[fill=gallery!42,
+%          draw,
+%          dashed,
+%          thick,
+          rounded corners=2pt,
+          fit={(sa10)(sa15)(sa16)(sa17)(sa18)(sa19)(sa30-hs)},
+          inner sep=3pt,
+          ] (dashedBox) {};
+          
+     \draw [dashed, flamingo] ($(cdot_io_0.north)+(0, -3.8em)$) to ($(cdot_io_31.north)+(0, 1.2em)$) ;
+     
+     \end{scope}
+    
+    \node[
+          draw,
+%          dashed,
+%          thick,
+          rounded corners=2pt,
+          fit={(sa10)(sa15)(sa16)(sa17)(sa18)(sa19)(sa30-hs)},
+          inner sep=3pt,
+          ] {};
+     \node[
+          rounded corners=2pt, opacity=0.8,
+          fit={(sa10)(sa15)(sa16)(sa17)(sa18)(sa19)(sa30-hs)},
+          inner sep=7pt,
+          align=center, text height=24pt, text depth=0.9em,
+          ]  {\fontsize{24}{30}\selectfont Edited $\,$ LLM};
+
+  \end{tikzpicture} %}
+  % \captionsetup{skip=2pt}
+  \caption{\textsc{Wild} evaluation framework}
+  \label{fig:prac_eval}
+\end{subfigure}
+% \captionsetup{skip=3pt}
+\caption{Illustration of synthetic and \textsc{Wild} evaluation frameworks for measuring reliability, generalization, and locality. Each framework comprises four key modules:\textcolor{flamingo}{\ding{202}}$\,$\textit{input}, \textcolor{flamingo}{\ding{203}}$\,$\textit{generation strategy}, \textcolor{flamingo}{\ding{204}}$\,$\textit{output truncation}, and \textcolor{flamingo}{\ding{205}}$\,$\textit{metric}. Here, we use LLM-as-a-Judge as an example metric to illustrate \textsc{Wild}, which supports various metrics.}
+\label{fig:eval_frame}
+\end{figure*}
