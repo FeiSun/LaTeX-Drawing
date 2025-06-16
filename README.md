@@ -35,3 +35,6 @@
 
 
 ## ploting with pgfplots
+
+
+**Disclaimer**: This repository simply collects some of the TikZ code snippets I used while writing research papers. They are shared as-is, without cleanup, optimization, or any maintenance guarantee. I’m just too lazy to organize them properly 😅 — but feel free to reuse or adapt them if they help!
