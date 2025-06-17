@@ -13,7 +13,7 @@
   - **TikZ Code**: [self-attention.tex](Drawing/self-attention.tex)
 
 - Pointer Network Architecture
-<img src="Preview/pointer.png" width="600">
+<img src="Preview/pointer.png" width="400">
 
 - **TikZ Code**: [pointer.tex](Drawing/pointer.tex)
 
@@ -28,13 +28,22 @@
 - **TikZ Code**: [contrastive.tex](Drawing/contrastive.tex)
 
 - Unlearning in recommendation [WWW 2022](https://dl.acm.org/doi/abs/10.1145/3485447.3511997)
-<img src="Preview/unlearn.png" width="600">
+<img src="Preview/unlearn.png" width="400">
 
 - **TikZ Code**: [unlearning.tex](Drawing/unlearning.tex)
 
 
-
 ## ploting with pgfplots
+
+- bar plot with comparison in ACL 25 [the mirage of model editing](https://arxiv.org/abs/2502.11177)
+<img src="Preview/bar_with_comp.png" width="600">
+
+- **TikZ Code**: [bar_with_comp.tex](Plotting/bar_with_comp.tex)
+
+- distribution plot in RecSys 19
+<img src="Preview/dist_plot.png" width="400">
+
+- **TikZ Code**: [distribution.tex](Plotting/distribution.tex)
 
 
 **Disclaimer**: This repository simply collects some of the TikZ code snippets I used while writing research papers. They are shared as-is, without cleanup, optimization, or any maintenance guarantee. I’m just too lazy to organize them properly 😅 — but feel free to reuse or adapt them if they help!
