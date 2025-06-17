@@ -1,0 +1,162 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[final]{acl}
+
+% Standard package includes
+\input{preamble}
+\usepackage{times}
+\usepackage{latexsym}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+% \usepackage[
+%   activate={true,nocompatibility},
+%   ]{microtype}
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{graphicx}
+\usepackage{epigraph}
+\usepackage{csquotes}
+\usepackage[justification=justified]{caption}
+% \usepackage[normalem]{ulem}
+
+\usepackage{xcolor}
+\usepackage{epigraph}
+\setlength\epigraphwidth{0.913\linewidth}
+\setlength\epigraphrule{0pt}
+
+\input{color}
+
+
+
+
+\begin{document}
+%\maketitle
+
+
+\pgfplotsset{
+axis background/.style={fill=gallery!62},
+grid=both,
+  xtick pos=left,
+  ytick pos=left,
+  tick style={
+    major grid style={style=white,line width=1pt},
+    minor grid style=gallery!62,
+    draw=none,
+  },
+  minor tick num=1,
+}
+
+\begin{figure}
+% \hypersetup{hidelinks}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={group size=2 by 1,
+        horizontal sep = 48pt,
+        }, 
+        width=1\linewidth,
+        height=0.618\linewidth,
+        enlarge x limits=0.15,
+        xlabel=\textbf{\large ROME},
+        ylabel=Success Rate (\%),
+        ylabel shift={-5pt},
+        ymin=40, ymax=102,
+        xticklabels={ZsRE, \textsc{CounterFact}, \textbf{QAEdit}},
+        xtick={1, 2, 3},
+        ybar=5pt,%  configures ‘bar shift’
+        every axis plot/.style={bar width=15pt},
+        ymajorgrids,
+        major grid style={draw=white},
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+	]
+    \nextgroupplot[
+    legend style = {
+		  % font=\small,
+          draw=none, 
+          draw opacity=0,
+          fill=none,
+          column sep = 2pt, 
+          /tikz/every even column/.append style={column sep=5mm},
+          legend columns = -1, 
+          legend to name = grouplegend
+          },
+    ]
+
+     \addplot [draw=none, fill=monte_carlo!160]
+        coordinates {
+          (1, 96.4)
+          (2, 99.6)
+          (3, 95.5)};  \addlegendentry{synthetic evaluation}
+        \addplot [draw=none, fill=my_sin!120]
+        coordinates {
+          (1, 74.1)
+          (2, 83.6)
+          (3, 58.5)}; \addlegendentry{\textsc{Wild} evaluation}
+          
+          
+       \draw[-stealth, ku_crimson, very thick, line width=3pt] (axis cs:0.86,96.4) to [out=-40, in=100] (axis cs:1.14,74.1);
+       \draw[-stealth, ku_crimson, very thick, line width=3pt] (axis cs:1.86,99.6) to [out=-30, in=120] (axis cs:2.14,83.6);
+       \draw[-stealth, ku_crimson, very thick, line width=3pt] (axis cs:2.86,95.5) to [out=-55, in=90] (axis cs:3.14,58.5);
+       
+    \nextgroupplot[
+    xlabel=\textbf{\large WISE},
+    ymin=0, ymax=102,
+    ]
+     \addplot [draw=none, fill=monte_carlo!160]
+        coordinates {
+          (1, 99.9)
+          (2, 99.9)
+          (3, 99.8)};  %\addlegendentry{editing evaluation}
+        \addplot [draw=none, fill=my_sin!120]
+        coordinates {
+          (1, 13.9)
+          (2, 52.1)
+          (3, 21.6)}; %\addlegendentry{real-world (QA) evaluation}
+
+         \draw[-stealth, ku_crimson, very thick, line width=3pt] (axis cs:0.86, 99.9) to [out=-50, in=90] (axis cs:1.14,13.9);
+       \draw[-stealth, ku_crimson, very thick, line width=3pt] (axis cs:1.86, 99.9) to [out=-45, in=90] (axis cs:2.14,52.1);
+       \draw[-stealth, ku_crimson, very thick, line width=3pt] (axis cs:2.86, 99.8) to [out=-60, in=90] (axis cs:3.14,21.6);
+       
+\end{groupplot}
+
+\node at ($(group c1r1) + (100pt, 55pt)$) {\pgfplotslegendfromname{grouplegend}};
+
+\end{tikzpicture}
+}
+\captionsetup{skip=3pt}
+% \captionsetup{belowskip=-12pt}
+\caption{Comparison of synthetic and \textsc{Wild} evaluation for ROME and WISE on Llama-2-7b-chat.}
+\label{fig:intro}
+\end{figure}
+
+
+
+
+% \subsection{Appendices}
+
+
+
+\end{document}
