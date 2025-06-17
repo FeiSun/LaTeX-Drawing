@@ -9,11 +9,11 @@
 
 
 - BERT4Rec for [CIKM 2019 paper](https://arxiv.org/abs/1904.06690)
-<img src="Preview/self-attention.jpg" width="600">
+<img src="Preview/self-attention.jpg" width="500">
   - **TikZ Code**: [self-attention.tex](Drawing/self-attention.tex)
 
 - Pointer Network Architecture
-<img src="Preview/pointer.png" width="400">
+<img src="Preview/pointer.png" width="600">
 
 - **TikZ Code**: [pointer.tex](Drawing/pointer.tex)
 
@@ -41,7 +41,7 @@
 - **TikZ Code**: [bar_with_comp.tex](Plotting/bar_with_comp.tex)
 
 - distribution plot in RecSys 19
-<img src="Preview/dist_plot.png" width="400">
+<img src="Preview/dist_plot.png" width="600">
 
 - **TikZ Code**: [distribution.tex](Plotting/distribution.tex)
 
